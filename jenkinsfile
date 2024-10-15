@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from a specific branch
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/maissa']], // replace 'ma-branche' with your branch
+                          userRemoteConfigs: [[url: 'https://github.com/Aurielle-hash/tp-foyer.git']] 
+                ])
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                // Run Maven clean and compile commands
+                sh 'mvn clean compile'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs() // Clean workspace after execution
+        }
+    }
+}
