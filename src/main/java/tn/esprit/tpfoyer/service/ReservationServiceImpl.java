@@ -1,6 +1,7 @@
 package tn.esprit.tpfoyer.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.tpfoyer.entity.Reservation;
@@ -20,11 +21,16 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     public Reservation retrieveReservation(String reservationId) {
-        return reservationRepository.findById(reservationId).get();
+        return reservationRepository.findById(reservationId).orElse(null);
     }
 
     public Reservation addReservation(Reservation r) {
-        return reservationRepository.save(r);
+
+        System.out.println("Ajout de la réservation: " + r);
+        // Votre logique d'ajout de réservation ici
+        Reservation savedReservation = reservationRepository.save(r);
+        System.out.println("Réservation ajoutée avec succès: " + savedReservation);
+        return savedReservation;
     }
 
     public Reservation modifyReservation(Reservation reservation) {
@@ -36,6 +42,10 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     public void removeReservation(String reservationId) {
-        reservationRepository.deleteById(reservationId);
+            reservationRepository.deleteById(reservationId);
+           // throw new EntityNotFoundException("Reservation not found"); 
+        System.out.println("Reservation supprimée avec succès");
     }
+
+
 }

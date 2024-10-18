@@ -27,6 +27,12 @@ pipeline {
                 sh "mvn compile"
             }
         }
+        stage('MVN Test') {
+            steps {
+                echo "test avec maven"
+                sh "mvn test"
+            }
+        }
         stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"

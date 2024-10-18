@@ -25,19 +25,15 @@ public class Reservation {
     boolean estValide;
 
 
-
-
-
-
-
-
-
-
-
     @ManyToMany
     Set<Etudiant> etudiants;
 
-
+    // Ajout du constructeur
+    public Reservation(String idReservation, Date anneeUniversitaire, boolean estValide) {
+        this.idReservation = idReservation;
+        this.anneeUniversitaire = anneeUniversitaire;
+        this.estValide = estValide;
+    }
 
 
     /*@ToString.Exclude
