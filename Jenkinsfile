@@ -6,7 +6,7 @@ pipeline {
             steps {
             
                 echo 'Pulling... '
-                git branch: 'master',
+                git branch: 'reservation', credentialsId: 'a2b1b1b1-1a1a-1a1a-1a1a-1a1a1a1a1a1a',
                 url :'https://github.com/Aurielle-hash/tp-foyer.git'
             }
         }
