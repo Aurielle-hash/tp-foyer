@@ -9,11 +9,7 @@ pipeline {
                 }
             }
 
-            stage('MVN test'){
-                steps {
-                    sh 'mvn -version'
-                }
-            }
+
 
 
             stage('MVN CLEAN'){
@@ -28,6 +24,12 @@ pipeline {
                     echo "Compilation avec maven"
                     sh "mvn compile"
                 }
+            }
+
+            stage('MVN test'){
+                 steps {
+                     sh 'mvn test'
+                 }
             }
 
             stage('MVN SONARQUBE'){
