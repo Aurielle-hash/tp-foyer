@@ -36,7 +36,7 @@ pipeline {
         stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
-                sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=Admin/sonar12"
+                sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=Sonde56.uses"
             }
         }
         stage('Nexus Deploy') {
