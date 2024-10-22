@@ -7,6 +7,7 @@ pipeline {
             
                 echo 'Pulling... '
                 git branch: 'reservation',
+                credentialsId: '61cdd0f1-76e2-4b38-a151-de18a3fa8ec0',
                 url :'https://github.com/Aurielle-hash/tp-foyer.git'
             }
         }
