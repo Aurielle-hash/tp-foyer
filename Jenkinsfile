@@ -3,9 +3,8 @@ pipeline {
     stages{
             stage('GIT'){
                 steps {
-                    echo 'Puling... ';
-                     git branch: 'foyer',
-                     url :'https://github.com/Aurielle-hash/tp-foyer.git';
+                    echo 'Pulling... '
+                    checkout scm
                 }
             }
 
@@ -28,7 +27,7 @@ pipeline {
 
             stage('MVN test'){
                  steps {
-                     sh 'mvn test'
+                     sh "mvn test"
                  }
             }
 
