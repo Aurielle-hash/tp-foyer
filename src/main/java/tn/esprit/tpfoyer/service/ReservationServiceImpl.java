@@ -43,7 +43,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     public void removeReservation(String reservationId) {
             reservationRepository.deleteById(reservationId);
-           // throw new EntityNotFoundException("Reservation not found"); 
+           // throw new EntityNotFoundException("Reservation not found");
         System.out.println("Reservation supprimée avec succès");
     }
 
