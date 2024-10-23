@@ -47,7 +47,7 @@ pipeline {
         stage('Building image') {
                    steps {
                         echo "creating docker image"
-                        sh "sudo docker build -t auriel31/tp-foyer:5.0.0 ."
+                        sh "docker build -t auriel31/tp-foyer:5.0.0 ."
                     }
                 }
     }
