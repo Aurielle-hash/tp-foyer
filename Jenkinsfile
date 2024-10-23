@@ -32,12 +32,12 @@ pipeline {
                 sh "mvn test"
             }
         }
-        /*stage('MVN Sonarqube') {
+        stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
                 sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=Sonde56.uses"
             }
-        }*/
+        }
         stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
