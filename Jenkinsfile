@@ -44,5 +44,11 @@ pipeline {
                 sh "mvn deploy -DskipTests"
             }
         }
+        stage('Building image') {
+                   steps {
+                        echo "creating docker image"
+                        sh "docker build -t auriel31/tp-foyer:5.0.0 ."
+                    }
+                }
     }
 }
