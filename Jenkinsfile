@@ -65,8 +65,8 @@ pipeline {
         stage('Debug') {
             steps {
                 sh 'docker --version'
-                sh 'docker-compose --version'
-                sh 'ls -l' // Pour lister les fichiers dans le répertoire de travail
+                sh 'docker compose version'
+                sh 'ls -la' // Pour lister les fichiers dans le répertoire de travail
             }
         }
 
@@ -77,7 +77,7 @@ pipeline {
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine*/
-                sh "docker-compose up -d"
+                sh "docker compose up -d"
             }
         }
     }
