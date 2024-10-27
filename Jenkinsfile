@@ -62,5 +62,15 @@ pipeline {
                 }
             }
         }
+        stage('Start Docker Composer') {
+            steps {
+                echo "starting docker composer"
+
+                /*lance le conteneur en arriere plan pour permettre à jenkins
+                de continuer la prochaine etape du pipeline sans attendrent que
+                 ce service docker se termine*/
+                sh "docker-compose up -d"
+            }
+        }
     }
 }
