@@ -62,6 +62,14 @@ pipeline {
                 }
             }
         }
+        stage('Debug') {
+            steps {
+                sh 'docker --version'
+                sh 'docker-compose --version'
+                sh 'ls -l' // Pour lister les fichiers dans le répertoire de travail
+            }
+        }
+
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
