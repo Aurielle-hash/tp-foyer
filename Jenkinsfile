@@ -50,5 +50,17 @@ pipeline {
                         sh "docker build -t auriel31/tp-foyer:5.0.0 ."
                     }
                 }
+        stage('Pushing image') {
+            steps {
+                echo "pushing docker image"
+                // Utilise withCredentials pour récupérer les credentials Docker Hub
+                withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
+                                                  usernameVariable: 'DOCKER_USERNAME',
+                                                  passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD"
+                sh "docker push auriel31/tp-foyer:5.0.0"
+                }
+            }
+        }
     }
 }
