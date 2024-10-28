@@ -73,11 +73,13 @@ pipeline {
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
+                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
-                 ce service docker se termine*/
-                sh "docker compose up -d"
+                 ce service docker se termine et reconstruis les images déjà existantes
+                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile*/
+                sh "docker compose up -d --build"
             }
         }
     }
