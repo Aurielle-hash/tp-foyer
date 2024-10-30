@@ -41,9 +41,11 @@ pipeline {
                                 mvn sonar:sonar \
                                 -Dsonar.host.url=$SONAR_HOST_URL \
                                 -Dsonar.login=\$SONAR_TOKEN \
-                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
                             """
-                }          //-Dsonar.coverage.jacoco... ici permet à SonarQube de localiser le rapport de couverture JaCoCo généré
+                }
+                       //-Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                       //-Dsonar.coverage.jacoco... ici permet à SonarQube de localiser le rapport de couverture JaCoCo généré
             }
         }
        /* stage('Nexus Deploy') {
