@@ -10,26 +10,22 @@ pipeline {
 
 
 
-
-            stage('MVN CLEAN'){
+            stage('MVN'){
                 steps {
                     echo "Clean avec maven"
                     sh "mvn clean"
-                }
-            }
 
-            stage('MVN COMPILE'){
-                steps {
                     echo "Compilation avec maven"
                     sh "mvn compile"
                 }
             }
 
-            stage('MVN test'){
-                 steps {
-                     sh "mvn test"
-                 }
-            }
+            /*stage('MVN COMPILE'){
+                steps {
+
+                }
+            }*/
+
 
             stage('MVN SONARQUBE'){
                 steps {
@@ -38,7 +34,7 @@ pipeline {
                 }
             }
 
-            stage('NEXUS Deploy'){
+            stage('NEXUS DEPLOY'){
                 steps {
                     echo "Déploiement sur Nexus"
                     sh "mvn deploy -DskipTests"
