@@ -40,7 +40,7 @@ pipeline {
                             sh """
                                 mvn sonar:sonar \
                                 -Dsonar.host.url=$SONAR_HOST_URL \
-                                -Dsonar.login=\$SONAR_TOKEN \
+                                -Dsonar.login=\$SONAR_TOKEN
 
                             """
                 }
@@ -48,12 +48,22 @@ pipeline {
                        //-Dsonar.coverage.jacoco... ici permet à SonarQube de localiser le rapport de couverture JaCoCo généré
             }
         }
-       /* stage('Nexus Deploy') {
+        stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
-                sh "mvn deploy -DskipTests"
+                 withCredentials([usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8',
+                                                   usernameVariable: 'NEXUS_USERNAME',
+                                                   passwordVariable: 'NEXUS_PASSWORD')]) {
+                                    sh """
+                                        mvn deploy \
+                                        -DskipTests \
+                                        -Dusername=\$NEXUS_USERNAME \
+                                        -Dpassword=\$NEXUS_PASSWORD
+                                    """
+                 }
             }
         }
+        /*
         stage('Building image') {
                    steps {
                         echo "creating docker image"
