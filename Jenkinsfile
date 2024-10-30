@@ -20,17 +20,18 @@ pipeline {
                 }
             }
 
-            /*stage('MVN COMPILE'){
-                steps {
-
-                }
-            }*/
-
 
             stage('MVN SONARQUBE'){
                 steps {
                     echo "Analyse avec sonarqube"
                     sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=giov@nniJB04"
+                }
+            }
+
+            stage('MOCKITO'){
+                steps {
+                    echo "Mockito test"
+                    sh "mvn test"
                 }
             }
 
