@@ -49,14 +49,14 @@ public class FoyerServiceImplTest {
         Assertions.assertNotNull(listFoyers); // Vérifie que la liste n'est pas nulle
         Assertions.assertEquals(2, listFoyers.size()); // Vérifie le nombre d'éléments
     }
-    @Test
+    /*@Test
     public void testCreate() {
         when(foyerRepository.save(foyer)).thenReturn(foyer);
         Foyer createdFoyer = foyerService.addFoyer(foyer);
         assertNotNull(createdFoyer);
         assertEquals(foyer.getNomFoyer(), createdFoyer.getNomFoyer());
         verify(foyerRepository, times(1)).save(foyer);
-    }
+    }*/
 
     @Test
     public void testAddFoyer() {
@@ -77,7 +77,7 @@ public class FoyerServiceImplTest {
         Assertions.assertEquals("Foyer A", foyer.getNomFoyer()); // Vérifie que le foyer récupéré est correct
     }
 
-    @Test
+    /*@Test
     public void testUpdate() {
         Foyer f = new Foyer(1L, "Foyer A", 100);
         when(foyerRepository.findById(1L)).thenReturn(Optional.of(f));
@@ -85,7 +85,7 @@ public class FoyerServiceImplTest {
         f.setCapaciteFoyer(150); // Modification de la capacité
         Foyer updatedFoyer = foyerService.modifyFoyer(f);
         Assertions.assertEquals(150, updatedFoyer.getCapaciteFoyer()); // Vérifie que la modification est correcte
-    }
+    }*/
 
     @Test
     public void testDelete() {

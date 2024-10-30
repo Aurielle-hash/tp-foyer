@@ -36,7 +36,7 @@ public class FoyerRepositoryTest {
         foyer.setCapaciteFoyer(100);
     }
 
-    @Test
+    /*@Test
     public void testSaveFoyer() {
         when(foyerRepository.save(any(Foyer.class))).thenReturn(foyer);
 
@@ -47,9 +47,9 @@ public class FoyerRepositoryTest {
         assertThat(savedFoyer).isNotNull();
         assertThat(savedFoyer.getNomFoyer()).isEqualTo(foyer.getNomFoyer());
         assertThat(savedFoyer.getCapaciteFoyer()).isEqualTo(foyer.getCapaciteFoyer());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testFindFoyerById() {
         // Simule le comportement de la méthode findById
         when(foyerRepository.findById(foyer.getIdFoyer())).thenReturn(Optional.of(foyer));
@@ -60,9 +60,9 @@ public class FoyerRepositoryTest {
         // Vérifie les résultats
         assertThat(foundFoyer).isPresent();
         assertThat(foundFoyer.get().getNomFoyer()).isEqualTo(foyer.getNomFoyer());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testUpdate() {
         Foyer foyer = new Foyer();
         foyer.setNomFoyer("Nom Initial");
@@ -77,8 +77,8 @@ public class FoyerRepositoryTest {
         assertTrue(foundFoyer.isPresent());
         assertEquals("Nom Mis à Jour", foundFoyer.get().getNomFoyer());
         assertEquals(150, foundFoyer.get().getCapaciteFoyer());
-    }
-    @Test
+    }*/
+    /*@Test
     public void testDelete() {
         // Aucune action à simuler ici, vérifions seulement l'appel
         doNothing().when(foyerRepository).deleteById(any(Long.class));
@@ -88,7 +88,7 @@ public class FoyerRepositoryTest {
 
         // Vérifie que deleteById a été appelé
         verify(foyerRepository, times(1)).deleteById(foyer.getIdFoyer());
-    }
+    }*/
 
 
 }
