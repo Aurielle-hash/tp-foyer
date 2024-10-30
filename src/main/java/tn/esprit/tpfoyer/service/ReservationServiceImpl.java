@@ -33,6 +33,12 @@ public class ReservationServiceImpl implements IReservationService {
         return savedReservation;
     }
 
+    public void removeReservation(String reservationId) {
+        reservationRepository.deleteById(reservationId);
+        // throw new EntityNotFoundException("Reservation not found");
+        System.out.println("Reservation supprimée avec succès");
+    }
+
     public Reservation modifyReservation(Reservation reservation) {
         return reservationRepository.save(reservation);
     }
@@ -41,11 +47,7 @@ public class ReservationServiceImpl implements IReservationService {
         return reservationRepository.findAllByAnneeUniversitaireBeforeAndEstValide(d, b);
     }
 
-    public void removeReservation(String reservationId) {
-            reservationRepository.deleteById(reservationId);
-           // throw new EntityNotFoundException("Reservation not found");
-        System.out.println("Reservation supprimée avec succès");
-    }
+
 
 
 }

@@ -32,15 +32,6 @@ public class ReservationRestController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
-    // http://localhost:8089/tpfoyer/reservation/retrieve-reservation-date-status/{d}/{v}
-    @GetMapping("/retrieve-reservation-date-status/{d}/{v}")
-    public ResponseEntity<List<Reservation>> retrieveReservationByDateAndStatus(
-            @PathVariable("d") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date d,
-            @PathVariable("v") boolean v) {
-        List<Reservation> reservations = reservationService.trouverResSelonDateEtStatus(d, v);
-        return new ResponseEntity<>(reservations, HttpStatus.OK);
-    }
-
     // http://localhost:8089/tpfoyer/reservation/add-reservation
     @PostMapping("/add-reservation")
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation r) {
@@ -60,5 +51,14 @@ public class ReservationRestController {
     public ResponseEntity<Reservation> modifyReservation(@RequestBody Reservation r) {
         Reservation reservation = reservationService.modifyReservation(r);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
+    // http://localhost:8089/tpfoyer/reservation/retrieve-reservation-date-status/{d}/{v}
+    @GetMapping("/retrieve-reservation-date-status/{d}/{v}")
+    public ResponseEntity<List<Reservation>> retrieveReservationByDateAndStatus(
+            @PathVariable("d") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date d,
+            @PathVariable("v") boolean v) {
+        List<Reservation> reservations = reservationService.trouverResSelonDateEtStatus(d, v);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }
