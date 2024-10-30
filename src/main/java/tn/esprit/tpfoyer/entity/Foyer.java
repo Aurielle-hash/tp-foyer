@@ -30,10 +30,20 @@ public class Foyer {
     Universite universite;
 
     @OneToMany(mappedBy = "foyer")
-            @JsonIgnore
-            @ToString.Exclude
+    @JsonIgnore
+    @ToString.Exclude
     Set<Bloc> blocs;
 
+    public Foyer(Long idFoyer, String nomFoyer) {
+        this.idFoyer = idFoyer;
+        this.nomFoyer = nomFoyer;
+    }
+
+    public Foyer(Long idFoyer, String nomFoyer, long capaciteFoyer) {
+        this.idFoyer = idFoyer;
+        this.nomFoyer = nomFoyer;
+        this.capaciteFoyer = capaciteFoyer;
+    }
 }
 
 

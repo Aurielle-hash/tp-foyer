@@ -7,6 +7,7 @@ import tn.esprit.tpfoyer.entity.Foyer;
 import tn.esprit.tpfoyer.repository.FoyerRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -28,5 +29,24 @@ public class FoyerServiceImpl implements IFoyerService {
 
     public void removeFoyer(Long foyerId) {
         foyerRepository.deleteById(foyerId);
+    }
+
+    public Optional<Foyer> read(Long id) {
+        return foyerRepository.findById(id);
+    }
+
+    public Foyer update(Long id, Foyer updatedFoyer) {
+        Optional<Foyer> existingFoyer = foyerRepository.findById(id);
+        if (existingFoyer.isPresent()) {
+            Foyer foyer = existingFoyer.get();
+            foyer.setNomFoyer(updatedFoyer.getNomFoyer());
+            return foyerRepository.save(foyer);
+        } else {
+            throw new RuntimeException("Foyer not found");
+        }
+    }
+
+    public void delete(Long id) {
+        foyerRepository.deleteById(id);
     }
 }
