@@ -40,7 +40,7 @@ pipeline {
                     echo "Déploiement sur Nexus"
                     sh "mvn deploy -DskipTests"
                 }
-            }*/
+            }
 
 
             stage('Building image'){
@@ -48,7 +48,7 @@ pipeline {
                     echo "creating docker image"
                     sh "docker build -t giovannibkn/tp-foyer:5.0.0 ."
                 }
-            }
+            }*/
 
             stage('DEPLOY image'){
                 steps {
