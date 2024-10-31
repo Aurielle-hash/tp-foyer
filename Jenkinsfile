@@ -50,7 +50,7 @@ pipeline {
                 }
             }
 
-            stage('DEPLOY image'){
+            /*stage('DEPLOY image'){
                 steps {
                     echo "push docker image"
                     sh "docker login -u giovannibkn -p giov@nniJB.04
