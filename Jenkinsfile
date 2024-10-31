@@ -46,7 +46,7 @@ pipeline {
             stage('Building image'){
                 steps {
                     echo "creating docker image"
-                    sh "docker build -t giovannibkn/tp-foyer:5.0.0 ." 
+                    sh "docker build -t giovannibkn/tp-foyer:5.0.0 ."
                 }
             }
 
@@ -54,7 +54,7 @@ pipeline {
                 steps {
                     echo "push docker image"
                     sh "docker login -u giovannibkn -p giov@nniJB.04
-                        docker push giovannibkn/tp-foyer:5.0.0"
+                    docker push giovannibkn/tp-foyer:5.0.0"
                 }
             }
 
