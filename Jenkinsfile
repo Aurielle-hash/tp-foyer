@@ -20,7 +20,7 @@ pipeline {
                 }
             }
 
-
+            /*
             stage('SONARQUBE'){
                 steps {
                     echo "Analyse avec sonarqube"
@@ -35,12 +35,12 @@ pipeline {
                 }
             }
 
-            stage('NEXUS DEPLOY'){
+            /*stage('NEXUS DEPLOY'){
                 steps {
                     echo "Déploiement sur Nexus"
                     sh "mvn deploy -DskipTests"
                 }
-            }
+            }*/
 
 
             stage('Building image'){
