@@ -20,20 +20,24 @@ pipeline {
                 }
             }
 
-            /*
-            stage('SONARQUBE'){
-                steps {
-                    echo "Analyse avec sonarqube"
-                    sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=giov@nniJB04"
-                }
-            }
-
             stage('MOCKITO'){
                 steps {
-                    echo "Mockito test"
+                    echo "Test unitaire avec mockito"
                     sh "mvn test"
                 }
             }
+
+            stage('SONARQUBE'){
+                steps {
+                    echo "Analyse avec sonarqube"
+                    withCredentials ([string(credentialsId: 'f9c1f8ba-2300-4e67-9490-84171cf1fe4e',
+                                             variable: 'SONAR_TOKEN')]) {
+                        sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
+                        }
+                    //sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=giov@nniJB04"
+                }
+            }
+
 
             /*stage('NEXUS DEPLOY'){
                 steps {
