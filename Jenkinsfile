@@ -42,14 +42,15 @@ pipeline {
                 }
             }
 
-            stage('Building image') {
+            /*
+            stage('Building image'){
                 steps {
                     echo "creating docker image"
                     sh "docker build -t giovannibkn/tp-foyer:5.0.0 ." //auriel31/tp-foyer:5.0.0
                 }
             }
 
-            stage('DEPLOY image') {
+            stage('DEPLOY image'){
                 steps {
                     echo "push docker image"
                     sh "docker login -u giovannibkn -p giov@nniJB.04
@@ -57,7 +58,7 @@ pipeline {
                 }
             }
 
-            /*stage('Pushing image') {
+            /*stage('Pushing image'){
                 steps {
                     echo "pushing docker image"
                     // Utilise withCredentials pour récupérer les credentials Docker Hub
@@ -68,15 +69,15 @@ pipeline {
                     sh "docker push $Tpfoyer_Image"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
                     }
                 }
-            }*/
+            }
 
-            stage('Start Docker Composer') {
+            stage('Start Docker Composer'){
                         steps {
                             echo "starting docker composer"
                             sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
                             sh "docker compose up -d --build"
                         }
-            }
+            }*/
 
     }
 
