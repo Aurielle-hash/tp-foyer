@@ -42,11 +42,11 @@ pipeline {
                 }
             }
 
-            /*
+
             stage('Building image'){
                 steps {
                     echo "creating docker image"
-                    sh "docker build -t giovannibkn/tp-foyer:5.0.0 ." //auriel31/tp-foyer:5.0.0
+                    sh "docker build -t giovannibkn/tp-foyer:5.0.0 ." 
                 }
             }
 
