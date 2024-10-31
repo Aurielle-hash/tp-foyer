@@ -29,8 +29,6 @@ public class FoyerServiceImplTest {
     @InjectMocks
     private FoyerServiceImpl foyerService;
 
-    private Foyer foyer;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this); // Initialisation des mocks
