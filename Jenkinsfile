@@ -50,11 +50,11 @@ pipeline {
                 }
             }
 
-            /*stage('DEPLOY image'){
+            stage('DEPLOY image'){
                 steps {
                     echo "push docker image"
-                    sh "docker login -u giovannibkn -p giov@nniJB.04
-                    docker push giovannibkn/tp-foyer:5.0.0"
+                    sh "docker login -u giovannibkn -p giov@nniJB.04"
+                    sh "docker push giovannibkn/tp-foyer:5.0.0"
                 }
             }
 
