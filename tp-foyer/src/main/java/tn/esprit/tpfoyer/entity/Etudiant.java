@@ -1,6 +1,5 @@
 package tn.esprit.tpfoyer.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,33 +7,30 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 import java.util.Set;
 
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+
+
 @NoArgsConstructor
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Chambre {
+public class Etudiant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long idChambre;
+    long idEtudiant;
 
-    long numeroChambre;
+    String nomEtudiant;
+    String prenomEtudiant;
+    long cinEtudiant;
+    Date dateNaissance;
 
-    @Enumerated(EnumType.STRING)
-    TypeChambre typeC;
-
-
-
-    @OneToMany
+    @ManyToMany(mappedBy = "etudiants")
     Set<Reservation> reservations;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    Bloc bloc;
-
-    public Chambre(String ch1, String ch2, Date date, TypeChambre typeChambre) {
-    }
 }
+
+
+

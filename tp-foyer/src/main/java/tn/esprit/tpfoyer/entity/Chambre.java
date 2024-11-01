@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
 import java.util.Set;
 
 
@@ -35,6 +34,4 @@ public class Chambre {
     @ManyToOne(cascade = CascadeType.ALL)
     Bloc bloc;
 
-    public Chambre(String ch1, String ch2, Date date, TypeChambre typeChambre) {
-    }
 }
