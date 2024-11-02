@@ -3,22 +3,26 @@ pipeline {
 
     stages {
         stage('Checkout GIT') {
-            steps {
-                echo 'Pulling...'
-                checkout scm
+       steps {
+            
+                echo 'Pulling... '
+                git branch: 'master',
+                url :'https://github.com/Aurielle-hash/tp-foyer.git'
             }
         }
   
         stage('Maven Clean') {
-            steps {
+             steps {
                echo "Clean avec maven"
+               
                sh "mvn clean"
+
             }
         }
 
         stage('Maven Compile') {
             steps {
-                echo "Compilation avec maven"
+                echo "compilation avec maven"
                 sh "mvn compile"
             }
         }
