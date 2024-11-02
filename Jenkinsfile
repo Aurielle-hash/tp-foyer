@@ -3,27 +3,35 @@ pipeline {
 
     stages {
         stage('Build') {
+                 stage('Checkout GIT') {
             steps {
-              
-                sh 'mvn clean install'
+            
+                echo 'Pulling... '
+                checkout scm
             }
         }
-
-        stage('Test') {
+  
+        stage('Maven Clean') {
             steps {
-              
-                sh 'mvn test'
+               echo "Clean avec maven"
+               
+               sh "mvn clean"
+
             }
-        }
 
-     
-    }
-
-    post {
-        always {
           
-            echo 'Pipeline completed'
         }
+        stage('Maven Compile') {
+            steps {
+                echo "compilation avec maven"
+                sh "mvn compile"
+            }
+        }
+        stage('MVN Test') {
+            steps {
+                echo "test avec maven"
+                sh "mvn test"
+            }
     }
 }
 
