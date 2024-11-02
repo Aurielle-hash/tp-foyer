@@ -27,8 +27,9 @@ public class EtudiantServiceImpl implements IEtudiantService {
     public Etudiant modifyEtudiant(Etudiant c) {
         return etudiantRepository.save(c);
     }
-    public void removeEtudiant(Long etudiantId) {
+    public Etudiant removeEtudiant(Long etudiantId) {
         etudiantRepository.deleteById(etudiantId);
+        return null;
     }
     public Etudiant recupererEtudiantParCin(long cin)
     {
