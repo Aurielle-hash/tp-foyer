@@ -3,28 +3,24 @@ pipeline {
 
     stages {
         stage('Checkout GIT') {
-       steps {
-            
+            steps {
                 echo 'Pulling... '
                 git branch: 'etudient',
-                url :'https://github.com/Aurielle-hash/tp-foyer.git'
-                                    credentialsId: '10dfc7a7-f955-43d9-80a5-a848bcf7c1f2' 
-
+                    url: 'https://github.com/Aurielle-hash/tp-foyer.git',
+                    credentialsId: '10dfc7a7-f955-43d9-80a5-a848bcf7c1f2' 
             }
         }
   
         stage('Maven Clean') {
-             steps {
-               echo "Clean avec maven"
-               
-               sh "mvn clean"
-
+            steps {
+                echo "Clean avec maven"
+                sh "mvn clean"
             }
         }
 
         stage('Maven Compile') {
             steps {
-                echo "compilation avec maven"
+                echo "Compilation avec maven"
                 sh "mvn compile"
             }
         }
