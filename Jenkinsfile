@@ -77,7 +77,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -f Dockerfile -t $Tpfoyer_Image ." //auriel31/tp-foyer:5.0.0
+                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."  //auriel31/tp-foyer:5.0.0
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
                 dir('tp-foyer-frontend') {
                     //sh 'npm install'
                     //sh 'npm run build --prod'
-                    sh "docker build -f Dockerfile-angular -t auriel31/tp-foyer-frontend:latest ." // FRONTEND_IMAGE
+                    sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ." // auriel31/tp-foyer-frontend:latest
                }
             }
         }
@@ -101,8 +101,8 @@ pipeline {
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                sh "docker push $Tpfoyer_Image"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
-                sh "docker push auriel31/tp-foyer-frontend:latest"
+                sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                sh "docker push $FRONTEND_IMAGE"
                 }
             }
         }
