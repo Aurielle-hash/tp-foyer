@@ -117,7 +117,7 @@ pipeline {
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
-                //sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
+                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
