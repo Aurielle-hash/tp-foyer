@@ -13,9 +13,9 @@ pipeline {
         stage('Maven Clean') {
             steps {
                echo "Clean avec maven"
-               
-               sh "mvn clean"
-
+                dir('tp-foyer') {
+                    sh "mvn clean"
+                }
             }
 
           
@@ -23,19 +23,24 @@ pipeline {
         stage('Maven Compile') {
             steps {
                 echo "compilation avec maven"
-                sh "mvn compile"
+                dir('tp-foyer') {
+                    sh "mvn compile"
+                }
             }
         }
         stage('MVN Test') {
             steps {
                 echo "test avec maven"
-                sh "mvn test"
+                dir('tp-foyer') {
+                    sh "mvn test"
+                }
             }
         }
         stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
-                withCredentials([string(credentialsId: '11ea0d21-5ae7-4510-bfdf-6cf8d80558d3',
+                dir('tp-foyer') {
+                    withCredentials([string(credentialsId: '11ea0d21-5ae7-4510-bfdf-6cf8d80558d3',
                                         variable: 'SONAR_TOKEN')]) {
                             sh """
                                 mvn sonar:sonar \
@@ -43,15 +48,16 @@ pipeline {
                                 -Dsonar.login=\$SONAR_TOKEN
 
                             """
+                    }
                 }
-                       //-Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                       //-Dsonar.coverage.jacoco... ici permet à SonarQube de localiser le rapport de couverture JaCoCo généré
+
             }
         }
         stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
-                 withCredentials([usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8',
+                dir('tp-foyer') {
+                    withCredentials([usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8',
                                                    usernameVariable: 'NEXUS_USERNAME',
                                                    passwordVariable: 'NEXUS_PASSWORD')]) {
                                     sh """
@@ -60,25 +66,42 @@ pipeline {
                                         -Dusername=\$NEXUS_USERNAME \
                                         -Dpassword=\$NEXUS_PASSWORD
                                     """
+                    }
                  }
             }
         }
         /*
-        stage('Building image') {
-                   steps {
-                        echo "creating docker image"
-                        sh "docker build -t $Tpfoyer_Image ." //auriel31/tp-foyer:5.0.0
-                    }
+        stage('Building backend image') {
+            steps {
+                echo "creating backend docker image"
+                dir('tp-foyer') {
+                    sh "docker build -t $Tpfoyer_Image ." //auriel31/tp-foyer:5.0.0
                 }
+
+            }
+        }
+
+        stage('building frontend image') {
+            steps {
+                echo "creating frontend docker image"
+                dir('tp-foyer-frontend') {
+                    //sh 'npm install'
+                    //sh 'npm run build --prod'
+                    sh "docker build -t auriel31/tp-foyer-frontend:latest ." // FRONTEND_IMAGE
+               }
+            }
+        }
+
         stage('Pushing image') {
             steps {
-                echo "pushing docker image"
+                echo "Push docker images"
                 // Utilise withCredentials pour récupérer les credentials Docker Hub
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
                 sh "docker push $Tpfoyer_Image"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
+                sh "docker push auriel31/tp-foyer-frontend:latest"
                 }
             }
         }

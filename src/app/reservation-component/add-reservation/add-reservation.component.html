@@ -1,0 +1,24 @@
+<div class="container mt-3">
+  <h2>Ajouter une Réservation</h2>
+  <form (ngSubmit)="saveReservation()">
+    <div class="form-group">
+      <label for="idReservation">ID de Réservation</label>
+      <input type="text" id="idReservation" [(ngModel)]="reservation.idReservation" name="idReservation" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="anneeUniversitaire">Année Universitaire</label>
+      <input type="date" id="anneeUniversitaire" [(ngModel)]="reservation.anneeUniversitaire" name="anneeUniversitaire" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label for="estValide">Validité</label>
+      <select id="estValide" [(ngModel)]="reservation.estValide" name="estValide" class="form-control">
+        <option [ngValue]="true">Valide</option>
+        <option [ngValue]="false">Non Valide</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Sauvegarder</button>
+  </form>
+</div>

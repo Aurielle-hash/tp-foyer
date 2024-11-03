@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="/">TP Foyer</a>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/reservations/add">Ajouter une Réservation</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container mt-3">
+  <h2>Liste des Réservations</h2>
+  <div class="search-container">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Rechercher par ID"
+        [(ngModel)]="searchId"
+        (input)="searchById()"
+        class="form-control"
+      />
+    </div>
+
+    <div class="search-box">
+      <input
+        type="date"
+        placeholder="Date Universitaire"
+        [(ngModel)]="searchDate"
+        class="form-control"
+      />
+      <select [(ngModel)]="searchStatus" class="form-control">
+        <option [ngValue]="true">Valide</option>
+        <option [ngValue]="false">Non valide</option>
+      </select>
+      <button class="btn btn-primary" (click)="searchByDateAndStatus()">Rechercher</button>
+    </div>
+  </div>
+
+  <button routerLink="/reservations/add" class="btn btn-primary mt-3">Ajouter une Réservation</button>
+
+  <table class="table table-hover mt-3 reservation-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Année Universitaire</th>
+      <th>Validité</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let reservation of reservations">
+      <td>{{ reservation.idReservation }}</td>
+      <td>{{ reservation.anneeUniversitaire | date:'yyyy' }}</td>
+      <td>{{ reservation.estValide ? 'Valide' : 'Non valide' }}</td>
+      <td>
+        <button (click)="deleteReservation(reservation.idReservation)" class="btn btn-danger">Supprimer</button>
+        <button routerLink="/reservations/details/{{ reservation.idReservation }}" class="btn btn-info">Détails</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
