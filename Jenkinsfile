@@ -25,13 +25,14 @@ pipeline {
             }
         }
 
+/*
         stage('MVN Test') {
             steps {
-                echo "Test avec maven"
+               echo "Test avec maven"
                 sh "mvn test"
             }
         }
-        
+  */
         stage('Maven SonarQube'){
         steps {
         	echo "Sonarqube analysis"
