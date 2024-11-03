@@ -1,4 +1,4 @@
-import {Etudiant} from './etudiant';
+import { Etudiant } from './etudiant';
 
 export class Reservation {
   idReservation: string;
@@ -6,7 +6,12 @@ export class Reservation {
   estValide: boolean;
   etudiants: Etudiant[];
 
-  constructor() {
+  constructor(
+    idReservation: string,
+    anneeUniversitaire: Date,
+    estValide: boolean,
+    etudiants: Etudiant[]
+  ) {
     this.idReservation = idReservation;
     this.anneeUniversitaire = anneeUniversitaire;
     this.estValide = estValide;

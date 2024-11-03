@@ -6,7 +6,7 @@ import { Reservation } from '../../models/reservation';
 @Component({
   selector: 'app-add-reservation',
   templateUrl: './add-reservation.component.html',
-  styleUrl: './add-reservation.component.css'
+  styleUrls: ['./add-reservation.component.css']
 })
 export class AddReservationComponent {
   reservation: Reservation = { idReservation: '', anneeUniversitaire: new Date(), estValide: false, etudiants: [] };

@@ -18,8 +18,8 @@ pipeline {
                 }
             }
 
-          
         }
+
         stage('Maven Compile') {
             steps {
                 echo "compilation avec maven"
@@ -28,7 +28,8 @@ pipeline {
                 }
             }
         }
-        stage('MVN Test') {
+
+        stage('MOCKITO Test') {
             steps {
                 echo "test avec maven"
                 dir('tp-foyer') {
@@ -36,6 +37,7 @@ pipeline {
                 }
             }
         }
+
         stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
@@ -50,9 +52,9 @@ pipeline {
                             """
                     }
                 }
-
             }
         }
+
         stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
@@ -67,17 +69,16 @@ pipeline {
                                         -Dpassword=\$NEXUS_PASSWORD
                                     """
                     }
-                 }
+                }
             }
         }
-        /*
+
         stage('Building backend image') {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -t $Tpfoyer_Image ." //auriel31/tp-foyer:5.0.0
+                    sh "docker build -f Dockerfile -t $Tpfoyer_Image ." //auriel31/tp-foyer:5.0.0
                 }
-
             }
         }
 
@@ -87,7 +88,7 @@ pipeline {
                 dir('tp-foyer-frontend') {
                     //sh 'npm install'
                     //sh 'npm run build --prod'
-                    sh "docker build -t auriel31/tp-foyer-frontend:latest ." // FRONTEND_IMAGE
+                    sh "docker build -f Dockerfile-angular -t auriel31/tp-foyer-frontend:latest ." // FRONTEND_IMAGE
                }
             }
         }
@@ -105,26 +106,25 @@ pipeline {
                 }
             }
         }
+
         stage('Debug') {
             steps {
                 sh 'docker --version'
                 sh 'docker compose version'
-                sh 'ls -la' // Pour lister les fichiers dans le répertoire de travail
             }
         }
 
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
-                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
+                //sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
-                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile //
+                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
                 sh "docker compose up -d --build"
             }
         }
-       */
     }
 }

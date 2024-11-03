@@ -5,7 +5,7 @@ import { Reservation } from '../../models/reservation';
 @Component({
   selector: 'app-reservation-details',
   templateUrl: './reservation-details.component.html',
-  styleUrl: './reservation-details.component.css'
+  styleUrls: ['./reservation-details.component.css']
 })
 export class ReservationDetailsComponent implements OnInit {
   reservation: Reservation | undefined;
