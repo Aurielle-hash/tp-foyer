@@ -29,6 +29,8 @@ public class FoyerServiceImplTest {
     @InjectMocks
     private FoyerServiceImpl foyerService;
 
+    private Foyer foyer;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this); // Initialisation des mocks
@@ -68,6 +70,18 @@ public class FoyerServiceImplTest {
     }
 
     @Test
+    public void testModifyFoyer() {
+        foyer.setNomFoyer("Updated Foyer");
+        when(foyerRepository.save(any(Foyer.class))).thenReturn(foyer);
+
+        Foyer modifiedFoyer = foyerService.modifyFoyer(foyer);
+
+        assertNotNull(modifiedFoyer);
+        assertEquals("Updated Foyer", modifiedFoyer.getNomFoyer());
+        verify(foyerRepository, times(1)).save(foyer);
+    }
+
+    @Test
     public void testRetrieveFoyer(){
         Foyer f = new Foyer(1L, "Foyer A", 100);
         when(foyerRepository.findById(1L)).thenReturn(Optional.of(f));
@@ -84,6 +98,42 @@ public class FoyerServiceImplTest {
         Foyer updatedFoyer = foyerService.modifyFoyer(f);
         Assertions.assertEquals(150, updatedFoyer.getCapaciteFoyer()); // Vérifie que la modification est correcte
     }*/
+
+    @Test
+    public void testRemoveFoyer() {
+        doNothing().when(foyerRepository).deleteById(1L);
+
+        foyerService.removeFoyer(1L);
+
+        verify(foyerRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void testRead() {
+        when(foyerRepository.findById(1L)).thenReturn(Optional.of(foyer));
+
+        Optional<Foyer> result = foyerService.read(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals("Test Foyer", result.get().getNomFoyer());
+        verify(foyerRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testUpdate() {
+        Foyer updatedFoyer = new Foyer();
+        updatedFoyer.setNomFoyer("Updated Foyer");
+
+        when(foyerRepository.findById(1L)).thenReturn(Optional.of(foyer));
+        when(foyerRepository.save(any(Foyer.class))).thenReturn(foyer);
+
+        Foyer result = foyerService.update(1L, updatedFoyer);
+
+        assertNotNull(result);
+        assertEquals("Updated Foyer", result.getNomFoyer());
+        verify(foyerRepository, times(1)).findById(1L);
+        verify(foyerRepository, times(1)).save(foyer);
+    }
 
     @Test
     public void testDelete() {

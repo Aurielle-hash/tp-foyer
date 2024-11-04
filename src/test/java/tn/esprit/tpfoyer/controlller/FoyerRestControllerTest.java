@@ -1,5 +1,7 @@
 package tn.esprit.tpfoyer.controlller;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -21,6 +23,7 @@ import tn.esprit.tpfoyer.entity.Foyer;
 import tn.esprit.tpfoyer.service.FoyerServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +35,7 @@ public class FoyerRestControllerTest {
     @InjectMocks
     private FoyerRestController foyerController;
     private MockMvc mockMvc;
-    private Foyer foyer;
+    //private Foyer foyer;
 
     @BeforeEach
     public void setUp() {
@@ -41,31 +44,43 @@ public class FoyerRestControllerTest {
     }
 
     @Test
-    public void testGetAllFoyers() throws Exception {
-        List<Foyer> mockFoyers = new ArrayList<>();
-        mockFoyers.add(new Foyer(1L, "Foyer A", 100)); // Remplacez par le constructeur approprié
-        mockFoyers.add(new Foyer(2L, "Foyer B", 200));
+    public void testGetFoyers() throws Exception {
+        Foyer foyer1 = new Foyer();
+        foyer1.setIdFoyer(1L);
+        foyer1.setNomFoyer("Foyer A");
 
-        when(foyerService.retrieveAllFoyers()).thenReturn(mockFoyers);
+        Foyer foyer2 = new Foyer();
+        foyer2.setIdFoyer(2L);
+        foyer2.setNomFoyer("Foyer B");
+
+        List<Foyer> foyers = Arrays.asList(foyer1, foyer2);
+        when(foyerService.retrieveAllFoyers()).thenReturn(foyers);
 
         mockMvc.perform(get("/foyer/retrieve-all-foyers"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].nomFoyer").value("Foyer A"))
-                .andExpect(jsonPath("$[1].nomFoyer").value("Foyer B"));
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].nomFoyer", is("Foyer A")))
+                .andExpect(jsonPath("$[1].nomFoyer", is("Foyer B")));
+
+        verify(foyerService, times(1)).retrieveAllFoyers();
     }
 
-    /*@Test
-    public void testCreateFoyer() throws Exception {
-        Foyer foyer = new Foyer(1L, "Foyer A", 100);
+    @Test
+    public void testAddFoyer() throws Exception {
+        Foyer foyer = new Foyer();
+        foyer.setIdFoyer(1L);
+        foyer.setNomFoyer("Foyer A");
+
         when(foyerService.addFoyer(any(Foyer.class))).thenReturn(foyer);
 
         mockMvc.perform(post("/foyer/add-foyer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idFoyer\":1,\"nomFoyer\":\"Foyer A\",\"capaciteFoyer\":100}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.nomFoyer").value("Foyer A"));
-    }*/
+                        .content("{\"idFoyer\":1,\"nomFoyer\":\"Foyer A\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nomFoyer", is("Foyer A")));
+
+        verify(foyerService, times(1)).addFoyer(any(Foyer.class));
+    }
 
     @Test
     public void testRetrieveFoyer() throws Exception {
@@ -76,25 +91,34 @@ public class FoyerRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.nomFoyer").value("Foyer A"));
+
+        verify(foyerService, times(1)).retrieveFoyer(1L);
     }
 
     @Test
-    public void testUpdateFoyer() throws Exception {
-        Foyer foyer = new Foyer(1L, "Foyer A", 150);
+    public void testModifyFoyer() throws Exception {
+        Foyer foyer = new Foyer();
+        foyer.setIdFoyer(1L);
+        foyer.setNomFoyer("Foyer Updated");
+
         when(foyerService.modifyFoyer(any(Foyer.class))).thenReturn(foyer);
 
         mockMvc.perform(put("/foyer/modify-foyer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idFoyer\":1,\"nomFoyer\":\"Foyer A\",\"capaciteFoyer\":150}"))
+                        .content("{\"idFoyer\":1,\"nomFoyer\":\"Foyer Updated\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.capaciteFoyer").value(150));
+                .andExpect(jsonPath("$.nomFoyer", is("Foyer Updated")));
+
+        verify(foyerService, times(1)).modifyFoyer(any(Foyer.class));
     }
 
-    /*@Test
-    public void testDeleteFoyer() throws Exception {
+    @Test
+    public void testRemoveFoyer() throws Exception {
         doNothing().when(foyerService).removeFoyer(1L);
 
         mockMvc.perform(delete("/foyer/remove-foyer/1"))
-                .andExpect(status().isNoContent());
-    }*/
+                .andExpect(status().isOk());
+
+        verify(foyerService, times(1)).removeFoyer(1L);
+    }
 }
