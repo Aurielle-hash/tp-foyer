@@ -55,6 +55,7 @@ pipeline {
                 }
             }
 
+/*
             stage('Cache Docker Image') {
                 steps {
                     echo "suppression du cache"
@@ -62,6 +63,7 @@ pipeline {
 
                 }
             }
+            */
 
             stage('DEPLOY image'){
                 steps {
