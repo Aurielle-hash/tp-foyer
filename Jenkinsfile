@@ -47,7 +47,7 @@ pipeline {
                     sh "mvn deploy -DskipTests"
                 }
             }
-*/
+
 
             stage('Building image'){
                 steps {
@@ -56,7 +56,7 @@ pipeline {
                 }
             }
 
-/*
+
             stage('Cache Docker Image') {
                 steps {
                     echo "suppression du cache"
@@ -64,11 +64,11 @@ pipeline {
 
                 }
             }
-            */
+
 
             stage('DEPLOY image'){
                 steps {
-                    echo "push docker image"
+                    echo "push docker images"
                     sh "docker login -u giovannibkn -p giov@nniJB.04"
                     sh "docker push giovannibkn/tp-foyer:5.0.0"
                 }
