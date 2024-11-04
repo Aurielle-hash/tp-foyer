@@ -82,6 +82,14 @@ pipeline {
             }
         }
 
+        stage('Cache Docker Image') {
+            steps {
+                echo "suppression du cache"
+                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
+
+            }
+        }
+
         stage('building frontend image') {
             steps {
                 echo "creating frontend docker image"
@@ -104,13 +112,6 @@ pipeline {
                 sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
                 sh "docker push $FRONTEND_IMAGE"
                 }
-            }
-        }
-
-        stage('Debug') {
-            steps {
-                sh 'docker --version'
-                sh 'docker compose version'
             }
         }
 
