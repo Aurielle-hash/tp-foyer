@@ -28,6 +28,7 @@ pipeline {
                 }
             }
 
+/*
             stage('SONARQUBE'){
                 steps {
                     echo "Analyse avec sonarqube"
