@@ -7,8 +7,8 @@ pipeline {
                 steps {
                     echo 'Pipeline started'
                 }
-            }
-            
+        }
+
         stage('Checkout GIT') {
             steps {
             
@@ -92,7 +92,7 @@ pipeline {
         stage('Cache Docker Image') {
             steps {
                 echo "suppression du cache"
-                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
+                docker builder prune -a -f // pour supprimer tous les cache avec -a et -f pour forcer la suppression
 
             }
         }
