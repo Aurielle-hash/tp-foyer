@@ -46,7 +46,7 @@ pipeline {
                     sh "mvn deploy -DskipTests"
                 }
             }
-
+*/
 
             stage('Building image'){
                 steps {
