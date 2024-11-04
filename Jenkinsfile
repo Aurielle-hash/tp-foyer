@@ -13,7 +13,7 @@ pipeline {
             stage('MVN BUILD'){
                 steps {
                     echo "Clean avec maven"
-                    sh "mvn clean"
+                    sh "mvn clean package"
 
                     echo "Compilation avec maven"
                     sh "mvn compile"
