@@ -2,13 +2,6 @@ pipeline {
     agent any
     
     stages {
-
-        stage('Initialization') {
-                steps {
-                    echo 'Pipeline started'
-                }
-        }
-
         stage('Checkout GIT') {
             steps {
             
@@ -51,12 +44,11 @@ pipeline {
                 dir('tp-foyer') {
                     withCredentials([string(credentialsId: '11ea0d21-5ae7-4510-bfdf-6cf8d80558d3',
                                         variable: 'SONAR_TOKEN')]) {
-                            sh """
-                                mvn sonar:sonar \
-                                -Dsonar.host.url=$SONAR_HOST_URL \
-                                -Dsonar.login=\$SONAR_TOKEN
-
-                            """
+                        sh """
+                        mvn sonar:sonar \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=\$SONAR_TOKEN
+                        """
                     }
                 }
             }
@@ -69,12 +61,12 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8',
                                                    usernameVariable: 'NEXUS_USERNAME',
                                                    passwordVariable: 'NEXUS_PASSWORD')]) {
-                                    sh """
-                                        mvn deploy \
-                                        -DskipTests \
-                                        -Dusername=\$NEXUS_USERNAME \
-                                        -Dpassword=\$NEXUS_PASSWORD
-                                    """
+                        sh """
+                        mvn deploy \
+                        -DskipTests \
+                        -Dusername=\$NEXUS_USERNAME \
+                        -Dpassword=\$NEXUS_PASSWORD
+                        """
                     }
                 }
             }
@@ -92,7 +84,7 @@ pipeline {
         stage('Cache Docker Image') {
             steps {
                 echo "suppression du cache"
-                docker builder prune -a -f // pour supprimer tous les cache avec -a et -f pour forcer la suppression
+                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
 
             }
         }
@@ -101,9 +93,9 @@ pipeline {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
-                    //sh 'npm install'
-                    //sh 'npm run build --prod'
-                    sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
+                     //sh 'npm install'
+                     //sh 'npm run build --prod'
+                     sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
         }
@@ -115,9 +107,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
-                sh "docker push $FRONTEND_IMAGE"
+                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh "docker push $FRONTEND_IMAGE"
+
                 }
             }
         }
