@@ -20,7 +20,7 @@ pipeline {
                 }
             }
 
-/*
+
             stage('MOCKITO'){
                 steps {
                     echo "Test unitaire avec mockito"
