@@ -1,6 +1,13 @@
 pipeline {
     agent any
     
+    stage('Initialization') {
+        steps {
+            echo 'Pipeline started'
+        }
+    }
+
+
     stages {
         stage('Checkout GIT') {
             steps {
