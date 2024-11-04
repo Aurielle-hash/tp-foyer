@@ -101,6 +101,8 @@ public class FoyerRestControllerTest {
         foyer.setIdFoyer(1L);
         foyer.setNomFoyer("Foyer Updated");
 
+
+
         when(foyerService.modifyFoyer(any(Foyer.class))).thenReturn(foyer);
 
         mockMvc.perform(put("/foyer/modify-foyer")

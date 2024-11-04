@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.tpfoyer.entity.Foyer;
 import tn.esprit.tpfoyer.repository.FoyerRepository;
-import tn.esprit.tpfoyer.repository.FoyerRepositoryTest;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,7 +33,11 @@ public class FoyerServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialisation des mocks
+        MockitoAnnotations.openMocks(this);
+        foyer = new Foyer();
+        foyer.setIdFoyer(1L);
+        foyer.setNomFoyer("Test Foyer");
+        // Initialisation des mocks
     }
 
     @Test
@@ -101,18 +105,21 @@ public class FoyerServiceImplTest {
 
     @Test
     public void testRemoveFoyer() {
-        doNothing().when(foyerRepository).deleteById(1L);
+        // Configuration pour supprimer sans lever d'exception
+        doNothing().when(foyerRepository).deleteById(foyer.getIdFoyer());
 
-        foyerService.removeFoyer(1L);
+        // Appel de la méthode `removeFoyer`
+        foyerService.removeFoyer(foyer.getIdFoyer());
 
-        verify(foyerRepository, times(1)).deleteById(1L);
+        // Vérification que `deleteById` a été appelé avec le bon ID
+        verify(foyerRepository).deleteById(foyer.getIdFoyer());
     }
 
     @Test
     public void testRead() {
-        when(foyerRepository.findById(1L)).thenReturn(Optional.of(foyer));
+        when(foyerRepository.findById(foyer.getIdFoyer())).thenReturn(Optional.of(foyer));
 
-        Optional<Foyer> result = foyerService.read(1L);
+        Optional<Foyer> result = foyerService.read(foyer.getIdFoyer());
 
         assertTrue(result.isPresent());
         assertEquals("Test Foyer", result.get().getNomFoyer());
@@ -124,10 +131,11 @@ public class FoyerServiceImplTest {
         Foyer updatedFoyer = new Foyer();
         updatedFoyer.setNomFoyer("Updated Foyer");
 
-        when(foyerRepository.findById(1L)).thenReturn(Optional.of(foyer));
-        when(foyerRepository.save(any(Foyer.class))).thenReturn(foyer);
+        when(foyerRepository.findById(foyer.getIdFoyer())).thenReturn(Optional.of(foyer));
+        when(foyerRepository.save(foyer)).thenReturn(foyer);
 
-        Foyer result = foyerService.update(1L, updatedFoyer);
+        // Appel de la méthode `update`
+        Foyer result = foyerService.update(foyer.getIdFoyer(), updatedFoyer);
 
         assertNotNull(result);
         assertEquals("Updated Foyer", result.getNomFoyer());
