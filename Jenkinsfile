@@ -55,6 +55,14 @@ pipeline {
                 }
             }
 
+            stage('Cache Docker Image') {
+                steps {
+                    echo "suppression du cache"
+                    docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
+
+                }
+            }
+
             stage('DEPLOY image'){
                 steps {
                     echo "push docker image"
@@ -71,7 +79,8 @@ pipeline {
                                           usernameVariable: 'DOCKER_USERNAME',
                                           passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $Tpfoyer_Image"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
+                    sh "docker push $FRONTEND_IMAGE"
                     }
                 }
             }
