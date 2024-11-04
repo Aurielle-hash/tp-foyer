@@ -84,7 +84,8 @@ pipeline {
         stage('Cache Docker Image') {
             steps {
                 echo "suppression du cache"
-                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
+                //  supprime tous les cache avec a et f pour forcer la suppression
+                sh "docker builder prune -a -f"
 
             }
         }
