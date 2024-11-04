@@ -77,7 +77,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."  //auriel31/tp-foyer:5.0.0
+                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."
                 }
             }
         }
@@ -96,7 +96,7 @@ pipeline {
                 dir('tp-foyer-frontend') {
                     //sh 'npm install'
                     //sh 'npm run build --prod'
-                    sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ." // auriel31/tp-foyer-frontend:latest
+                    sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
         }
