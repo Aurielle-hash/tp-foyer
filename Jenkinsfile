@@ -24,7 +24,7 @@ pipeline {
                 echo "compilation avec maven"
                     sh "mvn compile"
 
-            }
+                }
         }
     }
 }

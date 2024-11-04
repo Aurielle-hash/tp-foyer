@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class ChambreServiceImpl implements IChambreService {
 
-    ChambreRepository chambreRepository;
+    static ChambreRepository chambreRepository;
 
     public List<Chambre> retrieveAllChambres() {
         log.info("In Methodo retrieveAllChambres : ");
@@ -25,7 +25,13 @@ public class ChambreServiceImpl implements IChambreService {
         return listC;
     }
 
-    public static Chambre retrieveChambre(Long chambreId) {
+    @Override
+    public Chambre retrieveChambre(Long chambreId) {
+        return null;
+    }
+
+    public static Chambre retrieveChambre() {
+        Long chambreId = null;
         Chambre c = chambreRepository.findById(chambreId).get();
         return c;
     }
