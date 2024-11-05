@@ -81,6 +81,30 @@ pipeline {
             }
         }
 
+        stage('Pushing image backend') {
+            steps {
+                echo "Push docker image backend"
+                        // Utilise withCredentials pour récupérer les credentials Docker Hub
+                withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
+                                                  usernameVariable: 'DOCKER_USERNAME',
+                                                  passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+
+
+                }
+            }
+        }
+
+        stage('Start Docker Composer backend') {
+            steps {
+                echo "starting docker composer"
+                //arrete le conteneur s'il est deja en cours d'execution
+                sh "docker compose down"
+                sh "docker compose up -d --build"
+            }
+        }
+
         stage('Cache Docker Image') {
             steps {
                 echo "suppression du cache"
@@ -94,32 +118,28 @@ pipeline {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
-                     //sh 'npm install'
-                     //sh 'npm run build --prod'
                      sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
         }
 
-        stage('Pushing image') {
+        stage('Pushing image frontend') {
             steps {
-                echo "Push docker images"
+                echo "Push docker image frontend"
                 // Utilise withCredentials pour récupérer les credentials Docker Hub
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
-                    sh "docker push $FRONTEND_IMAGE"
+                    sh "docker push $FRONTEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
 
                 }
             }
         }
 
-        stage('Start Docker Composer') {
+        stage('Start Docker Composer frontend') {
             steps {
                 echo "starting docker composer"
-                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
