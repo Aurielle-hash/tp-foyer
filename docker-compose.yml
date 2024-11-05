@@ -30,7 +30,7 @@ services:
     tty: true
 
   app-frontend:
-    image: auriel31/tp-foyer-frontend:latest  # Image frontend
+    image: auriel31/tp-foyer:5.0.0  #tp-foyer-frontend:latest  # Image frontend
     restart: unless-stopped
     ports:
       - 8089:80  # Port exposé par l'application frontend
