@@ -14,7 +14,7 @@ pipeline {
             steps {
                echo "Clean avec maven"
                 dir('tp-foyer') {
-                    sh "mvn clean"
+                    sh 'mvn clean'
                 }
             }
 
@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo "compilation avec maven"
                 dir('tp-foyer') {
-                    sh "mvn compile"
+                    sh 'mvn compile'
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 echo "test avec maven"
                 dir('tp-foyer') {
-                    sh "mvn test"
+                    sh 'mvn test'
                 }
             }
         }
@@ -76,7 +76,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."
+                    sh 'docker build -f Dockerfile -t $BACKEND_IMAGE .'
                 }
             }
         }
@@ -88,8 +88,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh 'docker push $BACKEND_IMAGE'  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
 
 
                 }
@@ -100,8 +100,8 @@ pipeline {
             steps {
                 echo "starting docker composer"
                 //arrete le conteneur s'il est deja en cours d'execution
-                sh "docker compose down"
-                sh "docker compose up -d --build"
+                sh 'docker compose down'
+                sh 'docker compose up -d --build'
             }
         }
 
@@ -109,7 +109,7 @@ pipeline {
             steps {
                 echo "suppression du cache"
                 //  supprime tous les cache avec a et f pour forcer la suppression
-                sh "docker builder prune -a -f"
+                sh 'docker builder prune -a -f'
 
             }
         }
@@ -118,7 +118,7 @@ pipeline {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
-                     sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
+                     sh 'docker build -f Dockerfile-angular -t $FRONTEND_IMAGE .'
                }
             }
         }
@@ -130,8 +130,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $FRONTEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
+                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh 'docker push $FRONTEND_IMAGE'  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
 
                 }
             }
@@ -145,7 +145,7 @@ pipeline {
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
                  lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
-                sh "docker compose up -d --build"
+                sh 'docker compose up -d --build'
             }
         }
     }
