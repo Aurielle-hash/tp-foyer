@@ -8,7 +8,7 @@ pipeline {
                 echo 'Pulling... '
                 git branch: 'etudient',
                     url: 'https://github.com/Aurielle-hash/tp-foyer.git',
-                    credentialsId: '10dfc7a7-f955-43d9-80a5-a848bcf7c1f2'
+                    credentialsId: '48d69e09-f2d9-4929-9578-57115358de81	'
             }
         }
   
@@ -34,7 +34,7 @@ pipeline {
             }
         }
   */
-        stage('Maven SonarQube'){
+    /*    stage('Maven SonarQube'){
         steps {
         	echo "Sonarqube analysis"
         	                sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
@@ -44,7 +44,7 @@ pipeline {
 }
 
 
-        }
+        }*/
         
         
         
@@ -54,7 +54,7 @@ pipeline {
         sh "mvn deploy -DskipTests"
         }
         }
-        
+
         
         
     }
