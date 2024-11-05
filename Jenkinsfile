@@ -76,7 +76,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh 'docker build -f Dockerfile -t $BACKEND_IMAGE .'
+                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."
                 }
             }
         }
@@ -88,8 +88,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh 'docker push $BACKEND_IMAGE'  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
 
 
                 }
@@ -107,9 +107,8 @@ pipeline {
 
         stage('Cache Docker Image') {
             steps {
-                echo "suppression du cache"
-                //  supprime tous les cache avec a et f pour forcer la suppression
-                sh 'docker builder prune -a -f'
+                echo "Verification de la disponibilité de l'image"
+                sh "docker pull $FRONTEND_IMAGE || true" // || true permet de continuer le pipeline même si l'image n'existe pas
 
             }
         }
@@ -118,7 +117,9 @@ pipeline {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
-                     sh 'docker build -f Dockerfile-angular -t $FRONTEND_IMAGE .'
+                //  build avec cache pour eviter de retelecharger les dependances
+
+                    sh "docker build --cache-from=$FRONTEND_IMAGE -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
         }
@@ -130,8 +131,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh 'docker push $FRONTEND_IMAGE'  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
+                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh "docker push $FRONTEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
 
                 }
             }
