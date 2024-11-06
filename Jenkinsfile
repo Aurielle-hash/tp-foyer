@@ -6,9 +6,9 @@ pipeline {
         stage('Checkout GIT') {
             steps {
                 echo 'Pulling... '
-                git branch: 'etudient',
-                                    url: 'https://github.com/Aurielle-hash/tp-foyer.git',
-                                    credentialsId: '119780da-8873-45c1-a5b5-1dd957cd36a0'
+                //git branch: 'etudient',
+                                //    url: 'https://github.com/Aurielle-hash/tp-foyer.git',
+                                   // credentialsId: '119780da-8873-45c1-a5b5-1dd957cd36a0'
             }
         }
   
