@@ -47,14 +47,14 @@ pipeline {
         }
         
         
-        /*
+
         stage('NEXUS'){
         steps{
         echo "nexus deploiment"
         sh "mvn deploy -DskipTests"
         }
         }
-*/
+
         
         
     }
