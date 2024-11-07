@@ -1,5 +1,5 @@
 pipeline {
-   agent { label 'build_slaves23' }
+   agent { label 'build_slaves2' }
 
 
     stages {
@@ -60,4 +60,5 @@ pipeline {
     }
 
 }
+
 
