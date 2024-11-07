@@ -8,7 +8,7 @@ pipeline {
                 echo 'Pulling... '
                 git branch: 'etudient',
                                     url: 'https://github.com/Aurielle-hash/tp-foyer.git',
-                                   credentialsId: 'e86bd8f8-4943-4566-bc89-ae54b0151dac'
+                                  // credentialsId: 'e86bd8f8-4943-4566-bc89-ae54b0151dac'
             }
         }
   
