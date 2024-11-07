@@ -29,7 +29,7 @@ pipeline {
 
            stage('SonarQube Analysis') {
                     steps {
-                        withSonarQubeEnv('SonarQube') { // Use the SonarQube instance configured in Jenkins
+                        withSonarQubeEnv('SonarQubeServer') { // Use the SonarQube instance configured in Jenkins
                             sh '''
                               mvn clean verify sonar:sonar \
                                 -Dsonar.projectKey=Test \
