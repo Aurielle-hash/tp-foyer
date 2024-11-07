@@ -1,5 +1,7 @@
 pipeline {
-    agent { label 'build_slaves2' }
+    agent any
+
+    //{ label 'build_slaves2' }
 
     stages {
         stage('Checkout GIT') {
