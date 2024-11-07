@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    image: 0123456789rimen/tp-foyer:1.0.0  # Replace with your actual Docker image name
+    container_name: tp-foyer-app
+    ports:
+      - "8080:8080"  # Matches the application’s server port configuration
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db?createDatabaseIfNotExist=true  # Connects to the MySQL service defined below
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password  # Set a password if required by your MySQL configuration
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SERVER_PORT: 8080
+      SERVER_SERVLET_CONTEXT_PATH: /tpfoyer
+
+  db:
+    image: mysql:8.0  # Specifies MySQL version
+    container_name: tp-foyer-db
+    ports:
+      - "3306:3306"  # Exposes MySQL's default port
+    environment:
+      MYSQL_ROOT_PASSWORD: password  # Replace with your actual root password
+      MYSQL_DATABASE: db  # Database name as defined in your properties file
