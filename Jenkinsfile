@@ -31,12 +31,11 @@ pipeline {
                     steps {
                         withSonarQubeEnv('Test') { // Use the SonarQube instance configured in Jenkins
                             sh '''
-                              mvn sonar:sonar \
-                              -Dsonar.projectKey=Test \
-                              -Dsonar.projectName="Test" \
-                              -Dsonar.host.url=http://192.168.50.4:9000 \
-                              -Dsonar.token=sqp_04f4a37925227fbe707b011c181ed0a1a2fd1f2c \
-                              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                              mvn clean verify sonar:sonar \
+                                -Dsonar.projectKey=Test \
+                                -Dsonar.projectName='Test' \
+                                -Dsonar.host.url=http://192.168.50.4:9000 \
+                                -Dsonar.token=sqp_04f4a37925227fbe707b011c181ed0a1a2fd1f2c
                             '''
                         }
                     }
