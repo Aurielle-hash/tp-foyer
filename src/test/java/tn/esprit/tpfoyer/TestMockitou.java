@@ -5,31 +5,28 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import tn.esprit.tpfoyer.entity.Chambre;
-import tn.esprit.tpfoyer.repository.ChambreRepository;
 import tn.esprit.tpfoyer.entity.TypeChambre;
+import tn.esprit.tpfoyer.repository.ChambreRepository;
 import tn.esprit.tpfoyer.service.ChambreServiceImpl;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
-@TestMethodOrder(MethodOrderer.class)
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Ensure ordering by @Order annotation
 @Slf4j
 @ExtendWith(MockitoExtension.class)
 public class TestMockitou {
-    @Mock
 
-    private ChambreRepository chambreRepository;
+    @Mock
+    private ChambreRepository chambreRepository; // Mock the repository
+
     @InjectMocks
-    private ChambreServiceImpl chambreService;
+    private ChambreServiceImpl chambreService; // Inject mocks into the service
 
     @Order(1)
     @Test
@@ -44,6 +41,7 @@ public class TestMockitou {
         // Assert: Check that the chambre was saved correctly
         assertNotNull(savedChambre);
         assertEquals(chambre, savedChambre);
+        verify(chambreRepository, times(1)).save(chambre); // Verify the save operation was called once
     }
 
     @Order(2)
@@ -60,6 +58,7 @@ public class TestMockitou {
         // Assert: Verify that the retrieved chambre matches the expected result
         assertNotNull(foundChambre);
         assertEquals(1L, foundChambre.getIdChambre());
+        verify(chambreRepository, times(1)).findById(1L); // Verify the findById operation was called once
     }
 
     @Order(3)
@@ -77,6 +76,7 @@ public class TestMockitou {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(chambreList, result);
+        verify(chambreRepository, times(1)).findAll(); // Verify the findAll operation was called once
     }
 
     @Order(4)
@@ -89,10 +89,8 @@ public class TestMockitou {
         chambreService.removeChambre(chambreId);
 
         // Assert: Verify that deleteById was called in repository
-        verify(chambreRepository, times(1)).deleteById(chambreId);
+        verify(chambreRepository, times(1)).deleteById(chambreId); // Verify deleteById was called once
     }
-
-
 
     @Order(5)
     @Test
@@ -108,8 +106,8 @@ public class TestMockitou {
         // Assert: Verify that the updated chambre matches the expected result
         assertNotNull(updatedChambre);
         assertEquals(chambre, updatedChambre);
+        verify(chambreRepository, times(1)).save(chambre); // Verify the save operation was called once
     }
-
 
     @Order(6)
     @Test
@@ -117,7 +115,7 @@ public class TestMockitou {
         // Arrange: Mock a list of chambres based on TypeChambre
         Chambre chambre = new Chambre("ch1", "ch2", new Date(), TypeChambre.SIMPLE);
         List<Chambre> chambreList = Collections.singletonList(chambre);
-        when(chambreRepository.findByTypeC(TypeChambre.SIMPLE)).thenReturn(chambreList);
+        when(chambreRepository.findAllByTypeC(TypeChambre.SIMPLE)).thenReturn(chambreList);
 
         // Act: Call the recupererChambresSelonTyp method in service
         List<Chambre> result = chambreService.recupererChambresSelonTyp(TypeChambre.SIMPLE);
@@ -126,19 +124,6 @@ public class TestMockitou {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(chambreList, result);
+        verify(chambreRepository, times(1)).findAllByTypeC(TypeChambre.SIMPLE); // Verify findAllByTypeC was called once
     }
-
-
-
-
-
-    //Chambre chambre= new Chambre("ch1","ch2",new Date(), TypeChambre.SIMPLE);
-   //List<Chambre> chambreList=new ArrayList<Chambre>(){
-      //void add(new Chambre("f3","f4",new Date(), TypeChambre.SIMPLE));
-  // };
-
-
-  // List<Chambre>result = Collections.singletonList(ChambreServiceImpl.retrieveChambre());
-   //assertEquals(Chambre,result);
-
 }
