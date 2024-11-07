@@ -52,12 +52,24 @@ pipeline {
                 }
 
                 stage('Deploy to Nexus') {
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                            sh """
+                                mvn deploy -X -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://localhost:8081/repository/maven-releases/ \
+                                    -Dnexus.username=$NEXUS_USERNAME -Dnexus.password=$NEXUS_PASSWORD
+                            """
+                        }
+                    }
+                }
+
+
+                stage('Docker Image') {
                             steps {
-                                sh """
-                                    mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://localhost:8081/repository/maven-releases/
-                                """
+                                echo 'Construction de l\'image Docker...'
+                                sh 'docker build -t 0123456789rimen/tp-foyer:5.0.0 .'
                             }
                         }
+
 
 
 
