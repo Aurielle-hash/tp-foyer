@@ -63,13 +63,12 @@ pipeline {
                 }
 
 
-                stage('Docker Image') {
-                            steps {
-                                echo 'Construction de l\'image Docker...'
-                                sh 'docker build -t 0123456789rimen/tp-foyer:1.0.0 .'
-                            }
-                        }
-
+                 stage('Docker Image') {
+                     steps {
+                         echo 'Constructing Docker image...'
+                         sh 'docker build -t 0123456789rimen/tp-foyer:1.0.0 .'
+                     }
+                 }
 
 
 
