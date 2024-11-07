@@ -51,12 +51,11 @@ pipeline {
                     }
                 }
 
-                stage('Nexus') {
+                stage('Deploy to Nexus') {
                             steps {
-                                echo 'Déploiement sur Nexus...'
-                                sh '''
-                                  mvn deploy -DskipTests=true
-                                '''
+                                sh """
+                                    mvn deploy -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://localhost:8081/repository/maven-releases/
+                                """
                             }
                         }
 
