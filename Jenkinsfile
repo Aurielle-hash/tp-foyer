@@ -44,6 +44,17 @@ pipeline {
 
 
 
+                stage('Mockito') {
+                    steps {
+                        echo 'Running Mockito tests...'
+                        sh 'mvn test'
+                    }
+                }
+
+
+
+
+
 
     }
 }
