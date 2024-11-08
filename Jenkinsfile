@@ -104,6 +104,35 @@ pipeline {
 
 
 
+                 stage('Grafana Monitoring Setup') {
+                     steps {
+                         echo 'Setting up Grafana monitoring...'
+                         sh '''
+                             # Start existing Prometheus container if it's not already running
+                             if [ $(docker ps -aq -f name=prometheus -f status=exited) ]; then
+                                 docker start prometheus
+                             elif [ -z $(docker ps -aq -f name=prometheus) ]; then
+                                 docker run -d --name prometheus -p 9090:9090 \
+                                     -v $WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
+                                     prom/prometheus
+                             fi
+
+                             # Start existing Grafana container if it's not already running
+                             if [ $(docker ps -aq -f name=grafana -f status=exited) ]; then
+                                 docker start grafana
+                             elif [ -z $(docker ps -aq -f name=grafana) ]; then
+                                 docker run -d --name grafana -p 3000:3000 grafana/grafana
+                             fi
+                         '''
+                         echo 'Grafana and Prometheus are set up and running.'
+                     }
+                 }
+
+
+
+
+
+
 
 
 
