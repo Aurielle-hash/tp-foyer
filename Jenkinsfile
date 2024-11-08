@@ -1,15 +1,14 @@
 pipeline {
     agent any
 
-    //{ label 'build_slaves2' }
 
     stages {
         stage('Checkout GIT') {
             steps {
                 echo 'Pulling... '
                 git branch: 'etudient',
-                    url: 'https://github.com/Aurielle-hash/tp-foyer.git'
-                // credentialsId: 'e86bd8f8-4943-4566-bc89-ae54b0151dac'
+                  url: 'https://github.com/Aurielle-hash/tp-foyer.git',
+                 credentialsId: 'a2ec9b58-8763-48cd-96be-1114db6db38a'
             }
         }
 
