@@ -6,10 +6,9 @@ pipeline {
         stage('Checkout GIT') {
             steps {
                 echo 'Pulling... '
-                git branch: 'etudient',
-                  url: 'https://github.com/Aurielle-hash/tp-foyer.git',
-                 credentialsId: 'a2ec9b58-8763-48cd-96be-1114db6db38a'
-            }
+                checkout([$class: 'GitSCM', branches: [[name: 'etudient']], userRemoteConfigs: [[url: 'https://github.com/Aurielle-hash/tp-foyer.git', credentialsId: 'a2ec9b58-8763-48cd-96be-1114db6db38a']], extensions: [[$class: 'CloneOption', depth: 1]]])
+
+                }
         }
 
         stage('Maven Clean') {
