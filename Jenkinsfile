@@ -104,29 +104,72 @@ pipeline {
 
 
 
-                 stage('Grafana Monitoring Setup') {
-                     steps {
-                         echo 'Setting up Grafana monitoring...'
-                         sh '''
-                             # Start existing Prometheus container if it's not already running
-                             if [ $(docker ps -aq -f name=prometheus -f status=exited) ]; then
-                                 docker start prometheus
-                             elif [ -z $(docker ps -aq -f name=prometheus) ]; then
-                                 docker run -d --name prometheus -p 9090:9090 \
-                                     -v $WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
-                                     prom/prometheus
-                             fi
+                 //stage('Grafana Monitoring Setup') {
+                    // steps {
+                      //   echo 'Setting up Grafana monitoring...'
+                         //sh '''
+                          //   # Start existing Prometheus container if it's not already running
+                           //  if [ $(docker ps -aq -f name=prometheus -f status=exited) ]; then
+                               //  docker start prometheus
+                             //elif [ -z $(docker ps -aq -f name=prometheus) ]; then
+                               //  docker run -d --name prometheus -p 9090:9090 \
+                                 //    -v $WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
+                                   //  prom/prometheus
+                             //fi
 
-                             # Start existing Grafana container if it's not already running
-                             if [ $(docker ps -aq -f name=grafana -f status=exited) ]; then
-                                 docker start grafana
-                             elif [ -z $(docker ps -aq -f name=grafana) ]; then
-                                 docker run -d --name grafana -p 3000:3000 grafana/grafana
-                             fi
-                         '''
-                         echo 'Grafana and Prometheus are set up and running.'
-                     }
-                 }
+                            // # Start existing Grafana container if it's not already running
+                             //if [ $(docker ps -aq -f name=grafana -f status=exited) ]; then
+                               //  docker start grafana
+                             //elif [ -z $(docker ps -aq -f name=grafana) ]; then
+                               //  docker run -d --name grafana -p 3000:3000 grafana/grafana
+                             //fi
+                         //'''
+                        // echo 'Grafana and Prometheus are set up and running.'
+                     //}
+                // }
+
+
+
+                stage('Grafana Monitoring Setup') {
+                    steps {
+                        echo 'Setting up Grafana monitoring...'
+                        sh '''
+                            # Create prometheus.yml file if it doesn't exist
+                            cat <<EOL > $WORKSPACE/prometheus.yml
+                            global:
+                              scrape_interval: 15s
+                              evaluation_interval: 15s
+
+                            scrape_configs:
+                              - job_name: 'jenkins'
+                                static_configs:
+                                  - targets: ['192.168.50.4:8080'] # Replace with Jenkins IP and Port
+                              - job_name: 'grafana'
+                                static_configs:
+                                  - targets: ['localhost:3000']
+
+                            EOL
+
+                            # Start existing Prometheus container if it's not already running
+                            if [ $(docker ps -aq -f name=prometheus -f status=exited) ]; then
+                                docker start prometheus
+                            elif [ -z $(docker ps -aq -f name=prometheus) ]; then
+                                docker run -d --name prometheus -p 9090:9090 \
+                                    -v $WORKSPACE/prometheus.yml:/etc/prometheus/prometheus.yml \
+                                    prom/prometheus
+                            fi
+
+                            # Start existing Grafana container if it's not already running
+                            if [ $(docker ps -aq -f name=grafana -f status=exited) ]; then
+                                docker start grafana
+                            elif [ -z $(docker ps -aq -f name=grafana) ]; then
+                                docker run -d --name grafana -p 3000:3000 grafana/grafana
+                            fi
+                        '''
+                        echo 'Grafana and Prometheus are set up and running.'
+                    }
+                }
+
 
 
 
