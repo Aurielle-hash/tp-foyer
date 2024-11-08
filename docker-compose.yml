@@ -5,7 +5,7 @@ services:
     image: 0123456789rimen/tp-foyer:1.0.0  # Replace with your actual Docker image name
     container_name: tp-foyer-app
     ports:
-      - "8080:8080"  # Matches the application’s server port configuration
+      - "8081:8080"  # Matches the application’s server port configuration
     depends_on:
       - db
     environment:
