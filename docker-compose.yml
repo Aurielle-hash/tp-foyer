@@ -5,7 +5,7 @@ services:
     image: 0123456789rimen/tp-foyer:1.0.0  # Replace with your actual Docker image name
     container_name: tp-foyer-app
     ports:
-      - "8081:8080"  # Matches the application’s server port configuration
+      - "8089:8080"  # Matches the application’s server port configuration
     depends_on:
       - db
     environment:
@@ -14,7 +14,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password  # Set a password if required by your MySQL configuration
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
-      SERVER_PORT: 8080
+      SERVER_PORT: 8089
       SERVER_SERVLET_CONTEXT_PATH: /tpfoyer
 
   db:
