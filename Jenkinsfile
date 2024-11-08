@@ -79,6 +79,32 @@ pipeline {
 
 
 
+                 stage('Docker Hub') {
+                     steps {
+                         echo 'Pushing Docker image to Docker Hub...'
+                         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                             sh '''
+                                 # Log in to Docker Hub
+                                 echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+                                 # Tag the image for Docker Hub (with your Docker Hub username prefix)
+                                 docker tag 0123456789rimen/tp-foyer:1.0.0 $DOCKER_USER/tp-foyer:1.0.0
+
+                                 # Push the tagged image to Docker Hub
+                                 docker push $DOCKER_USER/tp-foyer:1.0.0
+
+                                 # Log out from Docker Hub
+                                 docker logout
+                             '''
+                         }
+                     }
+                 }
+
+
+
+
+
+
 
 
 
