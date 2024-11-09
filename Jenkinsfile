@@ -64,7 +64,7 @@ pipeline {
                 }
             }
         }
-     */
+
             stage('Building image'){
                 steps {
                     echo "creating docker image"
@@ -74,14 +74,7 @@ pipeline {
 
 /*
 
-            stage('DEPLOY image'){
-                steps {
-                    echo "push docker images"
-                    sh "docker login -u giovannibkn -p giov@nniJB.04"
-                    sh "docker push giovannibkn/tp-foyer:5.0.0"
-                }
-            }
-*/
+
             stage('Pushing image'){
                 steps {
                     echo "pushing docker image"
@@ -101,6 +94,18 @@ pipeline {
                             echo 'starting docker composer'
                             sh 'docker compose down' //arrete le conteneur s'il est deja en cours d'execution
                             sh 'docker compose up -d'
+                        }
+            }
+            */
+
+            stage('building frontend image') {
+                        steps {
+                            echo "creating frontend docker image"
+                            dir('tp-foyer-frontend') {
+                            //  build avec cache pour eviter de retelecharger les dependances
+
+                                sh "docker build --cache-from=$FRONTEND_IMAGE -f Dockerfile-angular -t $FRONTEND_IMAGE ."
+                           }
                         }
             }
 

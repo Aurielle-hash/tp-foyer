@@ -29,10 +29,10 @@ services:
     tty: true
 
   app-frontend:
-    image: giovannibkn/tp-foyer:5.0.0  # Image frontend
+    image: giovannibkn/tp-foyer-frontend:latest  # Image frontend
     restart: unless-stopped
     ports:
-      - 8089:8089  # Port exposé par l'application frontend
+      - 8089:80  # Port exposé par l'application frontend
     environment:
       - API_URL=http://app-backend:8082/tpfoyer # URL de l'API backend
 
