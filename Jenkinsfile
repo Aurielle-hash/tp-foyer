@@ -40,7 +40,7 @@ pipeline {
         }
 */
 
-         stage('NEXUS') {
+       /*  stage('NEXUS') {
              steps {
               withCredentials([usernamePassword(credentialsId: 'fcc467b6-97da-40aa-a0b6-4dd3f9b24c09', usernameVariable: 'admin', passwordVariable: 'Meyssouna21!')]) {
 
@@ -49,5 +49,22 @@ pipeline {
             }
          }
     }
+*/
+
+   environment {
+        IMAGE_NAME = 'BenHammed/tpfoyer-devops-5.0.0.jar'
+        IMAGE_TAG = 'latest'
+    }
+     stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
+
+        //stage ('pull image dans DockerHub'){}
+        //steps{}
 }
 }
