@@ -1,0 +1,46 @@
+/* Styles pour la barre de navigation */
+nav {
+  margin-bottom: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reservation-table {
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.btn {
+  margin-right: 5px;
+}
