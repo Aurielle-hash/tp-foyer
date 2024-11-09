@@ -47,6 +47,8 @@ pipeline {
 
          stage('NEXUS') {
              steps {
+              withCredentials([usernamePassword(credentialsId: 'fcc467b6-97da-40aa-a0b6-4dd3f9b24c09', usernameVariable: 'admin', passwordVariable: 'Meyssouna21!')]) {
+
                 echo "nexus deploiment"
                  sh "mvn deploy -DskipTests"
             }
