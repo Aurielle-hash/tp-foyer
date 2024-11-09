@@ -48,7 +48,7 @@ pipeline {
                 }
             }
 
-
+*/
             stage('Building image'){
                 steps {
                     echo "creating docker image"
@@ -56,7 +56,7 @@ pipeline {
                 }
             }
 
-
+/*
             stage('Cache Docker Image') {
                 steps {
                     echo "suppression du cache"
@@ -65,7 +65,7 @@ pipeline {
                 }
             }
 
-
+*/
             stage('DEPLOY image'){
                 steps {
                     echo "push docker images"
@@ -90,9 +90,9 @@ pipeline {
 */
             stage('Start Docker Composer'){
                         steps {
-                            echo "starting docker composer"
-                            sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
-                            sh "docker compose up -d --build"
+                            echo 'starting docker composer'
+                            sh 'docker compose down' //arrete le conteneur s'il est deja en cours d'execution
+                            sh 'docker compose up -d'
                         }
             }
 
