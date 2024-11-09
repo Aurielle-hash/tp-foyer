@@ -48,7 +48,7 @@ pipeline {
                 }
             }
 
-*/
+
             stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
@@ -64,23 +64,15 @@ pipeline {
                 }
             }
         }
-        /*
+     */
             stage('Building image'){
                 steps {
                     echo "creating docker image"
-                    sh "docker build -t giovannibkn/tp-foyer:5.0.0 ."
+                    sh "docker build -t $BACKEND_IMAGE ."
                 }
             }
 
 /*
-            stage('Cache Docker Image') {
-                steps {
-                    echo "suppression du cache"
-                    docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
-
-                }
-            }
-
 
             stage('DEPLOY image'){
                 steps {
@@ -89,20 +81,20 @@ pipeline {
                     sh "docker push giovannibkn/tp-foyer:5.0.0"
                 }
             }
-
-            /*stage('Pushing image'){
+*/
+            stage('Pushing image'){
                 steps {
                     echo "pushing docker image"
                     // Utilise withCredentials pour récupérer les credentials Docker Hub
-                    withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
+                    withCredentials([usernamePassword(credentialsId: 'b6e09ac4-b630-4f06-a2c7-74a7d3a343f2',
                                           usernameVariable: 'DOCKER_USERNAME',
                                           passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
                     sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable Tpfoyer_Image
-                    sh "docker push $FRONTEND_IMAGE"
                     }
                 }
             }
+
 
             stage('Start Docker Composer'){
                         steps {
@@ -111,7 +103,7 @@ pipeline {
                             sh 'docker compose up -d'
                         }
             }
-            */
+            
 
     }
 
