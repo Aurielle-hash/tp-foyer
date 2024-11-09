@@ -51,15 +51,12 @@ pipeline {
     }
 */
 
-   environment {
-        IMAGE_NAME = 'BenHammed/tpfoyer-devops-5.0.0.jar'
-        IMAGE_TAG = 'latest'
-    }
+
      stage('Build Docker Image') {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker build -t BenHammed/tpfoyer-devops-5.0.0.jar:latest."
                 }
             }
         }
