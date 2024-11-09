@@ -64,7 +64,13 @@ pipeline {
             }
         }
 
-        //stage ('pull image dans DockerHub'){}
-        //steps{}
+             stage('Push Docker Image') {
+                    steps {
+                        script {
+                            sh 'docker login -u benhammedmaissa -p Meyssouna21!'
+                            sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                        }
+                    }
+                }
 }
 }
