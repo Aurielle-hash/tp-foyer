@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t BenHammed/tpfoyer-devops-5.0.0.jar:latest."
+                    sh "docker build -t BenHammed/tpfoyer-devops-5.0.0.jar  ."
                 }
             }
         }
