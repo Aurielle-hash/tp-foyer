@@ -52,7 +52,6 @@ pipeline {
             stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
-                dir('tp-foyer') {
                     withCredentials([usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321',
                                                    usernameVariable: 'NEXUS_USERNAME',
                                                    passwordVariable: 'NEXUS_PASSWORD')]) {
@@ -62,7 +61,6 @@ pipeline {
                         -Dusername=\$NEXUS_USERNAME \
                         -Dpassword=\$NEXUS_PASSWORD
                         """
-                    }
                 }
             }
         }
