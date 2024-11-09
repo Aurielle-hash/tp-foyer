@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import tn.esprit.tpfoyer.entity.Etudiant;
 import tn.esprit.tpfoyer.repository.EtudiantRepository;
 import tn.esprit.tpfoyer.service.IEtudiantService;
-import tn.esprit.tpfoyer.service.EtudiantServiceImpl ;
 
 import java.util.Date;
 import java.util.List;
+
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 //@ContextConfiguration(classes = {EtudiantServiceImpl.class})
@@ -21,6 +20,7 @@ public class EtudiantServiceImplTest {
 
     @Autowired
     IEtudiantService etudientService;
+    EtudiantRepository etudiantRepository ;
     @Test
     @Order(1)
     public void testRetrieveAllEtudients() {
@@ -32,7 +32,7 @@ public class EtudiantServiceImplTest {
     @Test
     @Order(2)
     public void testAddReservation() {
-        Etudiant e = new Etudiant();
+        Etudiant e = new Etudiant("Amani", "ben", 13491078, new Date(19 / 11 / 1999));
 
         e.setNomEtudiant("Assil");
         e.setPrenomEtudiant("Dahmeni");
@@ -60,8 +60,9 @@ public class EtudiantServiceImplTest {
     @Test
     @Order(4)
     public void deleteEtudiant() {
-        Etudiant etudiant = etudientService.removeEtudiant(Long.valueOf(2));
+        Etudiant etudiant = etudientService.removeEtudiant(Long.valueOf(5));
     }
+
 
 
 

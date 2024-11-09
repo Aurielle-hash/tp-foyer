@@ -27,16 +27,16 @@ pipeline {
         
 
 
-        /*
+
         stage('MVN Test') {
             steps {
                echo "Test avec maven"
-               sh "mvn test"
+               sh "mvn -Dtest=EtudiantserviceImplTestMock test"
             }
         }
-        */
+/*
 
-        /*
+
         stage('Maven SonarQube') {
             steps {
                 echo "Sonarqube analysis"
