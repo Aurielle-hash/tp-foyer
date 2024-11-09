@@ -27,29 +27,29 @@ pipeline {
         
 
 
-
+/*
         stage('MVN Test') {
             steps {
                echo "Test avec maven"
                sh "mvn -Dtest=EtudiantserviceImplTestMock test"
             }
         }
+*/
 
-
-
+/*
         stage('Maven SonarQube') {
             steps {
                 echo "Sonarqube analysis"
                 sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
             }
         }
+*/
 
-
-        // stage('NEXUS') {
-        //     steps {
-        //         echo "nexus deploiment"
-        //         sh "mvn deploy -DskipTests"
-        //     }
-        // }
+         stage('NEXUS') {
+             steps {
+                echo "nexus deploiment"
+                 sh "mvn deploy -DskipTests"
+            }
+         }
     }
 }
