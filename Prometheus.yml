@@ -1,16 +1,12 @@
 global:
-  scrape_interval: 15s  # How often to scrape targets by default
+  scrape_interval: 15s
 
 scrape_configs:
-  # Scrape configuration for Jenkins
   - job_name: 'jenkins'
-    metrics_path: '/prometheus'  # Ensure you have Prometheus metrics enabled in Jenkins
+    metrics_path: '/prometheus'  # Ensure Prometheus metrics are enabled in Jenkins
     static_configs:
-      - targets: ['192.168.50.4:8080']  # Replace with your Jenkins IP and port if different
+      - targets: ['192.168.50.4:8080']
 
-  # Scrape configuration for the tp-foyer app (if it exposes Prometheus metrics)
   - job_name: 'tp-foyer-app'
     static_configs:
-      - targets: ['192.168.50.4:8089']  # Replace with the tp-foyer app IP and port if different
-
-  # Add other services here as needed
+      - targets: ['192.168.50.4:8089']
