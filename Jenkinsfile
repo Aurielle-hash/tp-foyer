@@ -49,6 +49,24 @@ pipeline {
             }
 
 */
+            stage('Nexus Deploy') {
+            steps {
+                echo "Déploiement sur Nexus"
+                dir('tp-foyer') {
+                    withCredentials([usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321',
+                                                   usernameVariable: 'NEXUS_USERNAME',
+                                                   passwordVariable: 'NEXUS_PASSWORD')]) {
+                        sh """
+                        mvn deploy \
+                        -DskipTests \
+                        -Dusername=\$NEXUS_USERNAME \
+                        -Dpassword=\$NEXUS_PASSWORD
+                        """
+                    }
+                }
+            }
+        }
+        /*
             stage('Building image'){
                 steps {
                     echo "creating docker image"
@@ -65,7 +83,7 @@ pipeline {
                 }
             }
 
-*/
+
             stage('DEPLOY image'){
                 steps {
                     echo "push docker images"
@@ -87,7 +105,7 @@ pipeline {
                     }
                 }
             }
-*/
+
             stage('Start Docker Composer'){
                         steps {
                             echo 'starting docker composer'
@@ -95,6 +113,7 @@ pipeline {
                             sh 'docker compose up -d'
                         }
             }
+            */
 
     }
 
