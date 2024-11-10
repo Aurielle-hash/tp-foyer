@@ -81,6 +81,13 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>owasp</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
@@ -115,6 +122,23 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>7.1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <format>HTML</format>  <!-- Génère un rapport HTML -->
+                            <outputDirectory>${project.build.directory}/dependency-check-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                </plugin>
         </plugins>
     </build>
 

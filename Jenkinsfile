@@ -20,6 +20,12 @@ pipeline {
                 }
             }
 
+            stage('Dependency Analysis with OWASP Dependency-Check') {
+                steps {
+                        sh 'mvn org.owasp:dependency-check-maven:check'
+                }
+            }
+
 
             stage('MOCKITO'){
                 steps {
