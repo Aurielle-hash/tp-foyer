@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import tn.esprit.tpfoyer.entity.Etudiant;
 import tn.esprit.tpfoyer.repository.EtudiantRepository;
 import tn.esprit.tpfoyer.service.EtudiantServiceImpl;
@@ -27,7 +25,7 @@ public class EtudiantserviceImplTestMock {
     @InjectMocks
     private EtudiantServiceImpl etudiantService;
     @InjectMocks
-        Etudiant etudiant = new Etudiant("Assil", "Dahmeni", 165425, new Date(1994/ 07/ 01));
+        Etudiant etudiant = new Etudiant("Amine", "Maatoug", 165425, new Date(1994/ 07/ 01));
     List<Etudiant> listEtudiants = new ArrayList<Etudiant>() {
         {
             add(new Etudiant("Sami", "Sami", 123456, new Date(1999/12/11)));
