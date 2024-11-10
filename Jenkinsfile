@@ -28,7 +28,7 @@ pipeline {
                 }
             }
 
-/*
+
             stage('SONARQUBE'){
                 steps {
                     echo "Analyse avec sonarqube"
@@ -41,13 +41,7 @@ pipeline {
             }
 
 
-            /*stage('NEXUS DEPLOY'){
-                steps {
-                    echo "Déploiement sur Nexus"
-                    sh "mvn deploy -DskipTests"
-                }
-            }
-
+            
 
             stage('Nexus Deploy') {
             steps {
@@ -72,7 +66,7 @@ pipeline {
                 }
             }
 
-/*
+
 
 
             stage('Pushing image'){
@@ -96,8 +90,8 @@ pipeline {
                             sh 'docker compose up -d'
                         }
             }
-            */
 
+/*
             stage('building frontend image') {
                         steps {
                             echo "creating frontend docker image"
@@ -108,7 +102,7 @@ pipeline {
                            }
                         }
             }
-
+*/
 
     }
 
