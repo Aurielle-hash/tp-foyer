@@ -55,7 +55,7 @@ pipeline {
      stage('Build Docker Image') {
             steps {
                 script {
-          sh 'cd /home/maissa/devops/TPS/tp-foyer && docker build -f Dockerfile -t tpfoyer-devops-5.0.0 .'
+          sh ' docker build -f Dockerfile -t tpfoyer-devops-5.0.0 .'
                }
             }
         }
