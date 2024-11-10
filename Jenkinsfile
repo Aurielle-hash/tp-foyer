@@ -105,15 +105,6 @@ pipeline {
             }
         }
 
-        /*stage('Cache Docker Image') {
-            steps {
-                echo "Verification de la disponibilité de l'image"
-                sh "docker pull $FRONTEND_IMAGE || true" // || true permet de continuer le pipeline même si l'image n'existe pas
-
-            }
-        }
-        */
-
         stage('building frontend image') {
             steps {
                 echo "creating frontend docker image"
