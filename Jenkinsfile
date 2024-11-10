@@ -60,7 +60,7 @@ pipeline {
 */
 
 
-    /* stage('Build Docker Image') {
+     stage('Build Docker Image') {
             steps {
                 script {
           sh ' docker build -t benhammedmaissa/tpfoyer-devops-5.0.0 .'
@@ -76,6 +76,6 @@ pipeline {
                         }
                     }
                 }
-}*/
+}
 }
 }
