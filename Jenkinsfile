@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                   sh 'docker build -f Dockerfile -t /tpfoyer-devops-5.0.0 .'
+                   sh 'docker build -f Dockerfile -t tpfoyer-devops-5.0.0 .'
 
 
 
