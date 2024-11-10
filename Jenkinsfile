@@ -105,13 +105,14 @@ pipeline {
             }
         }
 
-        stage('Cache Docker Image') {
+        /*stage('Cache Docker Image') {
             steps {
                 echo "Verification de la disponibilité de l'image"
                 sh "docker pull $FRONTEND_IMAGE || true" // || true permet de continuer le pipeline même si l'image n'existe pas
 
             }
         }
+        */
 
         stage('building frontend image') {
             steps {
@@ -141,12 +142,17 @@ pipeline {
         stage('Start Docker Composer frontend') {
             steps {
                 echo "starting docker composer"
+                // Nettoyage préalable (optionnel)
+                sh 'docker compose down --remove-orphans'
 
                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
                  lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
                 sh 'docker compose up -d --build'
+
+                // (Optionnel) Afficher les logs en cas de souci
+                sh 'docker compose logs --tail=100'
             }
         }
     }
