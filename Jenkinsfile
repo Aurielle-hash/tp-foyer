@@ -30,18 +30,15 @@ pipeline {
             }
         }
 
-        /*
-        Uncomment the following stages as needed
-        */
 
-        /*
         stage('MVN Test') {
             steps {
                 echo "Test avec maven"
-                sh "mvn -Dtest=EtudiantserviceImplTestMock test"
+                sh " mvn -Dtest=EtudiantserviceImplTestMock test
+"
             }
         }
-        */
+
 
         /*
         stage('Maven SonarQube') {
