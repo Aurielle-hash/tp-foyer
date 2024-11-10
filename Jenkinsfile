@@ -105,7 +105,7 @@ pipeline {
             }
         }
 
-        stage('building frontend image') {
+       /*  stage('building frontend image') {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
@@ -128,23 +128,23 @@ pipeline {
 
                 }
             }
-        }
+        } */
 
-        stage('Start Docker Composer frontend') {
+       /*  stage('Start Docker Composer frontend') {
             steps {
                 echo "starting docker composer"
                 // Nettoyage préalable (optionnel)
                 sh 'docker compose down --remove-orphans'
 
-                /*lance le conteneur en arriere plan pour permettre à jenkins
+                 //lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
-                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
+                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile *//*
                 sh 'docker compose up -d --build'
 
                 // (Optionnel) Afficher les logs en cas de souci
                 sh 'docker compose logs --tail=100'
             }
-        }
+        } */
     }
 }
