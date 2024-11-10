@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout GIT') {
             steps {
-                echo 'Pulling... '
+                echo 'Pulling.....'
                 checkout([$class: 'GitSCM', branches: [[name: 'etudient']], userRemoteConfigs: [[url: 'https://github.com/Aurielle-hash/tp-foyer.git', credentialsId: 'f8a1ea3e-fc24-4c47-adcf-019ea3f894e7']]])
             }
         }
