@@ -22,6 +22,14 @@ pipeline {
                 sh "mvn compile"
             }
         }
+               stage('Build') {
+                    steps {
+                        script {
+                            sh 'mvn clean install'
+                            sh 'pwd'
+                            sh 'ls target/'                         }
+                    }
+                }
         /*
         stage('MVN Test') {
             steps {
