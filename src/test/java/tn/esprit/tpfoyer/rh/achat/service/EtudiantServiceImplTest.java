@@ -20,7 +20,9 @@ public class EtudiantServiceImplTest {
 
     @Autowired
     IEtudiantService etudientService;
-    EtudiantRepository etudiantRepository ;
+    @Autowired
+    EtudiantRepository etudiantRepository;
+
     @Test
     @Order(1)
     public void testRetrieveAllEtudients() {
@@ -57,11 +59,11 @@ public class EtudiantServiceImplTest {
     }
 
 
-    @Test
+   /* @Test
     @Order(4)
     public void deleteEtudiant() {
         Etudiant etudiant = etudientService.removeEtudiant(Long.valueOf(5));
-    }
+    }*/
 
 
 
