@@ -41,14 +41,14 @@ pipeline {
             steps {
                 dir('tp-foyer') {
                     echo 'Publication du rapport OWASP Dependency-Check'
-                     publishHTML(
+                    publishHTML(
                         target: [
                             reportName: 'OWASP Dependency-Check Report',
                             reportDir: 'target/dependency-check-report', // Le répertoire où le rapport est généré
                             reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
                             keepAll: true
                        ]
-                     )
+                    )
                 }
             }
         }
@@ -56,10 +56,9 @@ pipeline {
         stage('MVN Test') {
             steps {
                 echo "Test avec maven"
-                sh " mvn -X test"
+                sh "mvn -X test"
             }
         }
-
 
         /*
         stage('Maven SonarQube') {
@@ -81,7 +80,8 @@ pipeline {
         }
         */
 
-     /*   stage('Build Docker Image') {
+        /*
+        stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t benhammedmaissa/tpfoyer-devops-5.0.0 .'
@@ -94,10 +94,9 @@ pipeline {
                 script {
                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
-
                 }
             }
-        }/*
-
+        }
+        */
     }
 }
