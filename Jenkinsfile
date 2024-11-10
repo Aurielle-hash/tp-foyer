@@ -39,7 +39,7 @@ pipeline {
         }
         stage('Publish Dependency-Check Report') {
             steps {
-                dir('tp-foyer') {
+
                     echo 'Publication du rapport OWASP Dependency-Check'
                     publishHTML(
                         target: [
@@ -49,7 +49,7 @@ pipeline {
                             keepAll: true
                        ]
                     )
-                }
+
             }
         }
 /*
