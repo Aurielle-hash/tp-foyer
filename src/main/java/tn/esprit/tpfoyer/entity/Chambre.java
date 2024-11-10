@@ -31,9 +31,10 @@ public class Chambre {
 
     @OneToMany
     Set<Reservation> reservations;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bloc_id_bloc", referencedColumnName = "id")
+    private Bloc bloc;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    Bloc bloc;
 
     public Chambre(String ch1, String ch2, Date date, TypeChambre typeChambre) {
     }
