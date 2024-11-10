@@ -28,13 +28,13 @@ services:
     stdin_open: true
     tty: true
 
-  app-frontend:
-    image: giovannibkn/tp-foyer-frontend:latest  # Image frontend
-    restart: unless-stopped
-    ports:
-      - 8089:80  # Port exposé par l'application frontend
-    environment:
-      - API_URL=http://app-backend:8082/tpfoyer # URL de l'API backend
+#  app-frontend:
+ #   image: giovannibkn/tp-foyer-frontend:latest  # Image frontend
+  #  restart: unless-stopped
+  #  ports:
+  #    - 8089:80  # Port exposé par l'application frontend
+  #  environment:
+  #    - API_URL=http://app-backend:8082/tpfoyer # URL de l'API backend
 
 volumes:
   db :
