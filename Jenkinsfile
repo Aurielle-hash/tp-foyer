@@ -26,6 +26,20 @@ pipeline {
                 }
             }
 
+            stage('Publish Dependency-Check Report') {
+                        steps {
+                            echo 'Publication du rapport OWASP Dependency-Check'
+                            publishHTML(
+                                target: [
+                                    reportName: 'OWASP Dependency-Check Report',
+                                    reportDir: 'target/dependency-check-report', // Le répertoire où le rapport est généré
+                                    reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
+                                    keepAll: true
+                                ]
+                            )
+                        }
+            }
+
 
             stage('MOCKITO'){
                 steps {
