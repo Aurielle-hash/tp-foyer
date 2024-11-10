@@ -10,15 +10,18 @@ pipeline {
 
 
 
-            stage('MVN BUILD'){
+            stage('MVN Clean'){
                 steps {
                     echo "Clean avec maven"
                     sh "mvn clean package"
-
-                    echo "Compilation avec maven"
-                    sh "mvn compile"
                 }
             }
+            stage('MVN Complie'){
+                    steps {
+                            echo "Compilation avec maven"
+                            sh "mvn compile"
+                    }
+                }
 
             stage('Dependency Analysis with OWASP Dependency-Check') {
                 steps {
