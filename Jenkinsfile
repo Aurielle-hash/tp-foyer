@@ -41,7 +41,7 @@ pipeline {
             }
 
 
-            
+
 
             stage('Nexus Deploy') {
             steps {
