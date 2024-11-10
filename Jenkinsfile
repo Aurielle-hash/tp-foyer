@@ -14,7 +14,7 @@ pipeline {
             steps {
                echo "Clean avec maven"
                 dir('tp-foyer') {
-                    sh 'mvn clean'
+                    sh "mvn clean"
                 }
             }
 
@@ -24,7 +24,31 @@ pipeline {
             steps {
                 echo "compilation avec maven"
                 dir('tp-foyer') {
-                    sh 'mvn compile'
+                    sh "mvn compile"
+                }
+            }
+        }
+
+        stage('OWASP Dependency-Check') {
+            steps {
+                dir('tp-foyer') {
+                    echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
+                    sh 'mvn org.owasp:dependency-check-maven:check'
+                }
+            }
+        }
+        stage('Publish Dependency-Check Report') {
+            steps {
+                dir('tp-foyer') {
+                    echo 'Publication du rapport OWASP Dependency-Check'
+                     publishHTML(
+                        target: [
+                            reportName: 'OWASP Dependency-Check Report',
+                            reportDir: 'target/dependency-check-report', // Le répertoire où le rapport est généré
+                            reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
+                            keepAll: true
+                       ]
+                     )
                 }
             }
         }
@@ -33,12 +57,12 @@ pipeline {
             steps {
                 echo "test avec maven"
                 dir('tp-foyer') {
-                    sh 'mvn test'
+                    sh "mvn test"
                 }
             }
         }
 
-        stage('MVN Sonarqube') {
+        /* stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
                 dir('tp-foyer') {
@@ -81,69 +105,50 @@ pipeline {
             }
         }
 
-        stage('Pushing image backend') {
+        stage('Cache Docker Image') {
             steps {
-                echo "Push docker image backend"
-                        // Utilise withCredentials pour récupérer les credentials Docker Hub
-                withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
-                                                  usernameVariable: 'DOCKER_USERNAME',
-                                                  passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                echo "suppression du cache"
+                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
 
-
-                }
             }
         }
 
-        stage('Start Docker Composer backend') {
-            steps {
-                echo "starting docker composer"
-                //arrete le conteneur s'il est deja en cours d'execution
-                sh 'docker compose down'
-                sh 'docker compose up -d --build'
-            }
-        }
-
-       /*  stage('building frontend image') {
+        stage('building frontend image') {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
-                //  build avec cache pour eviter de retelecharger les dependances
-
-                    sh "docker build --cache-from=$FRONTEND_IMAGE -f Dockerfile-angular -t $FRONTEND_IMAGE ."
+                     //sh 'npm install'
+                     //sh 'npm run build --prod'
+                     sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
         }
 
-        stage('Pushing image frontend') {
+        stage('Pushing image') {
             steps {
-                echo "Push docker image frontend"
+                echo "Push docker images"
                 // Utilise withCredentials pour récupérer les credentials Docker Hub
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $FRONTEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable FRONTEND_IMAGE
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh "docker push $FRONTEND_IMAGE"
 
                 }
             }
         }
 
-       /*  stage('Start Docker Composer frontend') {
+        stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
-                // Nettoyage préalable (optionnel)
-                sh 'docker compose down --remove-orphans'
+                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
-                 //lance le conteneur en arriere plan pour permettre à jenkins
+                 *//*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
                  lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile *//*
-                sh 'docker compose up -d --build'
-
-                // (Optionnel) Afficher les logs en cas de souci
-                sh 'docker compose logs --tail=100'
+                sh "docker compose up -d --build"
             }
         } */
     }
