@@ -60,7 +60,7 @@ pipeline {
 
                    docker build -f Dockerfile -t tpfoyer-devops-5.0.0  .'''
 
-
+}
 
                 }
             }
