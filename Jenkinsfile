@@ -22,6 +22,12 @@ pipeline {
                 sh "mvn compile"
             }
         }
+           stage('Maven Compile') {
+                    steps {
+                        //echo "Compilation avec maven"
+                        sh "mvn clean install"
+                    }
+                }
 
 
         /*
