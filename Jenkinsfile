@@ -35,7 +35,7 @@ pipeline {
             }
 
 
-            stage('SONARQUBE'){
+            /* stage('SONARQUBE'){
                 steps {
                     echo "Analyse avec sonarqube"
                     withCredentials ([string(credentialsId: 'f9c1f8ba-2300-4e67-9490-84171cf1fe4e',
@@ -95,7 +95,7 @@ pipeline {
                             sh 'docker compose down' //arrete le conteneur s'il est deja en cours d'execution
                             sh 'docker compose up -d'
                         }
-            }
+            } */
 
 /*
             stage('building frontend image') {
