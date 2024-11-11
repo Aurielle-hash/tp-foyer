@@ -29,6 +29,7 @@ pipeline {
                 sh "mvn clean package"
             }
         }
+        /*
         stage('OWASP Dependency-Check') {
             steps {
 
@@ -52,7 +53,16 @@ pipeline {
                     )
                 }
             }
-        }
+        }*/
+           stages {
+                stage('Security Scan') {
+                    steps {
+                        script {
+                            sh 'docker pull devsec/security-checker'
+                            sh 'docker run --rm devsec/security-checker benhammedmaissa/tpfoyer-devops-5.0.0'
+                        }
+                    }
+                }
 /*
         stage('MVN Test') {
             steps {
