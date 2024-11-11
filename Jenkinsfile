@@ -56,16 +56,14 @@ pipeline {
         }
 
 
-       stage('Run Ansible Playbook') {
-                   steps {
-                       echo 'Running Ansible Playbook on Vagrant...'
-                       sshagent(['SSHansible']) {
-                           sh 'ansible-playbook -i /home/vagrant/synced_folder/inventory /home/vagrant/synced_folder/playbooks.yml -vvv'
-                       }
-                   }
-               }
-
-
+     stage('Run Ansible Playbook') {
+         steps {
+             echo 'Running Ansible Playbook on Vagrant...'
+             sshagent(['SSHansible']) {
+                 sh 'ansible-playbook -i /home/vagrant/synced_folder/inventory /home/vagrant/synced_folder/playbooks.yml -vvv'
+             }
+         }
+     }
 
 
 
