@@ -95,12 +95,6 @@ pipeline {
                                      }
                         }
 
-            stage('Archive Reports') {
-                  steps {
-                          archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
-                  }
-              }
-
 
 
 
