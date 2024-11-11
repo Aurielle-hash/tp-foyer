@@ -23,24 +23,24 @@ pipeline {
             }
         }
 
-        stage('Maven build') {
+        stage('Maven Build') {
             steps {
                 echo "Building avec maven"
                 sh "mvn clean package"
             }
         }
+
         /*
         stage('OWASP Dependency-Check') {
             steps {
-
-                    echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
-                    sh 'mvn org.owasp:dependency-check-maven:check'
-
+                echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
+                sh 'mvn org.owasp:dependency-check-maven:check'
             }
         }
+
         stage('Publish Dependency-Check Report') {
             steps {
-                    dir('tp-foyer') {
+                dir('tp-foyer') {
                     echo 'Publication du rapport OWASP Dependency-Check'
                     publishHTML(
                         target: [
@@ -49,28 +49,30 @@ pipeline {
                             reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
                             keepAll: true,
                             alwaysLinkToLastBuild: false
-                       ]
+                        ]
                     )
                 }
             }
-        }*/
-           stages {
-                stage('Security Scan') {
-                    steps {
-                        script {
-                            sh 'docker pull devsec/security-checker'
-                            sh 'docker run --rm devsec/security-checker benhammedmaissa/tpfoyer-devops-5.0.0'
-                        }
-                    }
+        }
+        */
+
+        stage('Security Scan') {
+            steps {
+                script {
+                    sh 'docker pull devsec/security-checker'
+                    sh 'docker run --rm devsec/security-checker benhammedmaissa/tpfoyer-devops-5.0.0'
                 }
-/*
+            }
+        }
+
+        /*
         stage('MVN Test') {
             steps {
                 echo "Test avec maven"
                 sh "mvn -X test"
             }
         }
-        /*
+        */
 
         /*
         stage('Maven SonarQube') {
@@ -111,5 +113,4 @@ pipeline {
         }
         */
     }
-}
 }
