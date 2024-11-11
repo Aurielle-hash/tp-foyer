@@ -88,10 +88,30 @@ pipeline {
                         }
                     }
 
+                    stage('Conversion JSON en HTML') {
+                        steps {
+                            script {
+                                // S'assurer que Python et les dépendances sont installés
+                                sh '''
+                                pip3 install --user json2html
+
+                                mkdir -p rapports_html
+                                for file in trivy-reports/*.jso; do
+                                    if [ -f "$file" ]; then
+                                        base_name=$(basename "$file" .json)
+                                        python3 trivy_to_html.py "$file" "trivy-reports/${base_name}.html"
+                                    fi
+                                done
+                                '''
+                            }
+                        }
+                    }
+
+
                         // Étape pour archiver les rapports de Trivy
                         stage('Archive Reports') {
                                      steps {
-                                             archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
+                                             archiveArtifacts artifacts: "trivy-reports/*.html", allowEmptyArchive: true
                                      }
                         }
 
