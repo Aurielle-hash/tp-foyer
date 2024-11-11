@@ -113,9 +113,7 @@ pipeline {
                 script {
                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
-                   // docker run -p 8090:8080 benhammedmaissa/tpfoyer-devops-5.0.0
-
-                    sh'docker run –p 8090:8080 benhammedmaissa/tpfoyer-devops-5.0.0'                }
+                    //sh'docker run –p 8090:8080 benhammedmaissa/tpfoyer-devops-5.0.0'                }
             }
         }
 
