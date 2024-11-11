@@ -44,25 +44,27 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook') {
+        stage('Deploy to Nexus') {
             steps {
-                echo 'Running Ansible Playbook on Vagrant...'
-                sshagent(['SSHansible']) {
-                    sh 'ansible-playbook -i /home/vagrant/synced_folder/inventory /home/vagrant/synced_folder/playbooks.yml -vvv'
+                withCredentials([usernamePassword(credentialsId: 'deploymentRepo', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                    sh """
+                        mvn deploy -X -DskipTests -DaltDeploymentRepository=deploymentRepo::default::http://localhost:8081/repository/maven-releases/ \
+                            -Dnexus.username=$NEXUS_USERNAME -Dnexus.password=$NEXUS_PASSWORD
+                    """
                 }
             }
         }
 
 
-
        stage('Run Ansible Playbook') {
-           steps {
-               echo 'Running Ansible Playbook on Vagrant...'
-               sshagent(['SSHansible']) {
-                   sh 'ansible-playbook -i /home/vagrant/synced_folder/inventory /home/vagrant/synced_folder/playbooks.yml -vvv'
+                   steps {
+                       echo 'Running Ansible Playbook on Vagrant...'
+                       sshagent(['SSHansible']) {
+                           sh 'ansible-playbook -i /home/vagrant/synced_folder/inventory /home/vagrant/synced_folder/playbooks.yml -vvv'
+                       }
+                   }
                }
-           }
-       }
+
 
 
 
