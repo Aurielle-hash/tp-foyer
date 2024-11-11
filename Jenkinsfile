@@ -96,7 +96,7 @@ pipeline {
                                 pip3 install --user json2html
 
                                 mkdir -p rapports_html
-                                for file in trivy-reports/*.jso; do
+                                for file in trivy-reports/*.json; do
                                     if [ -f "$file" ]; then
                                         base_name=$(basename "$file" .json)
                                         python3 trivy_to_html.py "$file" "trivy-reports/${base_name}.html"
