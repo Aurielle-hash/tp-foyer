@@ -66,17 +66,10 @@ pipeline {
             steps {
                 dir("tp-foyer") {
                     script {
-                        // Injecter les identifiants de Nexus, SonarQube et Docker Hub
-                        withCredentials([
-                            string(credentialsId: '11ea0d21-5ae7-4510-bfdf-6cf8d80558d3', variable: 'SONAR_TOKEN'), // SonarQube token
-                            usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD'), // Nexus credentials
-                            usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD') // Docker Hub credentials
-                        ]) {
                             // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
                             def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
                             def reportsDir = "trivy-reports/"
                             sh "mkdir -p ${reportsDir}"
-                            sh "mkdir -p ${htmlReportsDir}"
 
                             // Exécuter un scan Trivy pour chaque conteneur en parallèle
                             parallel containerIds.collectEntries { containerId ->
@@ -94,19 +87,15 @@ pipeline {
                                         --no-progress \
                                         --format json \
                                         --output ${reportsDir}/trivy-report-${containerId}.json \
-                                        --username \$NEXUS_USERNAME \
-                                        --password \$NEXUS_PASSWORD \
-                                        --sonar-token \$SONAR_TOKEN \
-                                        --docker-user \$DOCKER_USERNAME \
-                                        --docker-password \$DOCKER_PASSWORD \
                                         ${image}
                                         """
+
                                     } catch (Exception e) {
                                         echo "Failed to scan container ${containerId}: ${e}"
                                     }
                                 }]
                             }
-                        }
+
                     }
                 }
             }
