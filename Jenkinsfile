@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-       /* stage('OWASP Dependency-Check') {
+        stage('OWASP Dependency-Check') {
             steps {
                 dir('tp-foyer') {
                     echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
@@ -61,7 +61,7 @@ pipeline {
                 }
             }
         }
-        */
+
         stage('Docker Security Scanning with Trivy') {
             steps {
                 dir("tp-foyer") {
