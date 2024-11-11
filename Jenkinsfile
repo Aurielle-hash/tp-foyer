@@ -61,6 +61,45 @@ pipeline {
                 }
             }
         }
+        */
+
+        stage('Docker Security Scanning with Trivy') {
+                     steps {
+                         script {
+                             // Liste des conteneurs en cours d'exécution
+                             def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n')
+
+                             // Si aucun conteneur n'est en cours d'exécution
+                             if (containers.isEmpty()) {
+                                 echo "No containers running to scan"
+                             } else {
+                                 containers.each { container ->
+                                     // Récupérer l'image utilisée par chaque conteneur
+                                     def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
+
+                                     // Scanner l'image avec Trivy
+                                     echo "Scanning container image: ${image} with Trivy"
+                                     sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
+
+                                     // Archiver le rapport HTML généré pour chaque conteneur
+                                     sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
+                                 }
+                             }
+                         }
+                     }
+        }
+
+        stage('Archive Reports') {
+                     steps {
+                         script {
+                             // Créer un répertoire pour stocker les rapports
+                             sh "mkdir -p ${WORKSPACE}/trivy-reports/"
+
+                             // Déplacer les rapports générés vers un répertoire spécifique
+                             archiveArtifacts artifacts: 'trivy-reports/*.html', allowEmptyArchive: true
+                         }
+                     }
+        }
 
          stage('MVN Sonarqube') {
             steps {
@@ -97,25 +136,7 @@ pipeline {
             }
         }
 
-       */
 
-         stage('Docker Security Scanning with Trivy') {
-                    steps {
-                        dir('tp-foyer') {
-                            echo "Scanning Docker image for vulnerabilities with Trivy"
-                            sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress $BACKEND_IMAGE"
-                        }
-                    }
-         }
-
-                stage('Docker Compliance Check with Trivy') {
-                    steps {
-                        dir('tp-foyer') {
-                            echo "Checking Docker image for compliance with CIS Benchmarks"
-                        sh "trivy image --security-checks config --exit-code 1 --no-progress $BACKEND_IMAGE"
-                        }
-                    }
-                }
 
         stage('Building backend image') {
             steps {
