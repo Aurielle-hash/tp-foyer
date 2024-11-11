@@ -76,18 +76,18 @@ pipeline {
                         } else {
                             def containers = [:]
                             containers.each { container ->
-                             containerScans["Scan ${container}"] = {
-                                                        try {
-                                                            def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
-                                                            echo "Scanning container image: ${image} with Trivy"
-                                                            sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
-                                                            sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
-                                                        } catch (Exception e) {
-                                                            echo "Failed to scan container ${container}: ${e.getMessage()}"
-                                                        }
-                                                    }
-                                                }
-                                                parallel containerScans
+                                 containerScans["Scan ${container}"] = {
+                                    try {
+                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
+                                        echo "Scanning container image: ${image} with Trivy"
+                                        sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
+                                        sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
+                                    } catch (Exception e) {
+                                        echo "Failed to scan container ${container}: ${e.getMessage()}"
+                                    }
+                                 }
+                            }
+                        parallel containerScans
                         }
                     }
                }
