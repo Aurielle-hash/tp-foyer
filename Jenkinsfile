@@ -55,20 +55,17 @@ pipeline {
             }
         }
 
-   stage('Run Ansible Playbook') {
-       environment {
-           VAGRANT_IP = "192.168.50.4"  // Replace with your Vagrant machine IP
-           SSH_CREDENTIALS_ID = "SSHAnsible"  // Use your credentials ID
-       }
-       steps {
-           echo 'Running Ansible Playbook on Vagrant...'
-           sshagent([SSH_CREDENTIALS_ID]) {
-               sh """
-               ssh -o StrictHostKeyChecking=no -i /home/vagrant/private_key vagrant@${VAGRANT_IP} "ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml"
-               """
-           }
-       }
-   }
+  stage('Run Ansible Playbook') {
+      steps {
+          echo 'Running Ansible Playbook on Vagrant...'
+          sshagent(credentials: ['SSHAnsible']) { // Replace 'SSHAnsible' with your Jenkins credential ID
+              sh """
+              ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml
+              """
+          }
+      }
+  }
+
 
 
 
