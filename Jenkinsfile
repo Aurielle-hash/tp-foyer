@@ -95,11 +95,11 @@ pipeline {
                                         --no-progress \
                                         --format json \
                                         --output ${reportsDir}/trivy-report-${containerId}.json \
-                                        --username \$NEXUS_USERNAME \
-                                        --password \$NEXUS_PASSWORD \
-                                        --sonar-token \$SONAR_TOKEN \
-                                        --docker-user \$DOCKER_USERNAME \
-                                        --docker-password \$DOCKER_PASSWORD \
+                                        --username \${NEXUS_USERNAME} \
+                                        --password \${NEXUS_PASSWORD} \
+                                        --sonar-token \${SONAR_TOKEN} \
+                                        --docker-user \${DOCKER_USERNAME} \
+                                        --docker-password \${DOCKER_PASSWORD} \
                                         ${image}
                                         """
                                         // Convertir le rapport JSON en HTML après le scan
@@ -125,6 +125,22 @@ pipeline {
                  }
              }
          }
+         stage('Publish Trivy HTML Reports') {
+             steps {
+                 dir("tp-foyer") {
+                     // Publier les rapports HTML générés dans Jenkins
+                     publishHTML(
+                         target: [
+                             reportName: 'Trivy Security Scan Report',
+                             reportDir: 'trivy-reports-html', // Répertoire contenant les rapports HTML
+                             reportFiles: '*.html',           // Fichiers HTML à afficher
+                             keepAll: true
+                         ]
+                     )
+                 }
+             }
+         }
+
 
 
          stage('MVN Sonarqube') {
@@ -135,8 +151,8 @@ pipeline {
                                         variable: 'SONAR_TOKEN')]) {
                         sh """
                         mvn sonar:sonar \
-                        -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=\$SONAR_TOKEN
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=\${SONAR_TOKEN}
                         """
                     }
                 }
@@ -154,8 +170,8 @@ pipeline {
                         sh """
                         mvn deploy \
                         -DskipTests \
-                        -Dusername=\$NEXUS_USERNAME \
-                        -Dpassword=\$NEXUS_PASSWORD
+                        -Dusername=\${NEXUS_USERNAME} \
+                        -Dpassword=\${NEXUS_PASSWORD}
                         """
                     }
                 }
@@ -168,7 +184,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."
+                    sh "docker build -f Dockerfile -t ${BACKEND_IMAGE} ."
                 }
             }
         }
@@ -192,8 +208,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh "docker login -u \${DOCKER_USERNAME} -p \${DOCKER_PASSWORD}" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh "docker push ${BACKEND_IMAGE}"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
                   //  sh "docker push $FRONTEND_IMAGE"
 
                 }
