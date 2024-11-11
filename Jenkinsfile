@@ -55,7 +55,7 @@ pipeline {
             }
         }
         */
-
+/*
         stage('Security Scan') {
             steps {
                 script {
@@ -84,7 +84,7 @@ pipeline {
                     ])
                 }
             }
-        }
+        }/*
 
         /*
         stage('MVN Test') {
@@ -100,7 +100,7 @@ pipeline {
             steps {
                 echo "Sonarqube analysis"
                // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
-                           sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=sqa_20a205482b7ba50ff560b9b70550aa31738cf780"
+                           sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
             }
         }
 stage('Publish SonarQube Report') {
