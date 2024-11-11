@@ -63,36 +63,46 @@ pipeline {
         }
         */
 
-         stage('Docker Security Scanning with Trivy') {
+        stage('Docker Security Scanning with Trivy') {
             steps {
                 dir('tp-foyer') {
                     script {
-                             // Liste des conteneurs en cours d'exécution
+                        // Liste des conteneurs en cours d'exécution
                         def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n')
 
-                             // Si aucun conteneur n'est en cours d'exécution
+                        // Si aucun conteneur n'est en cours d'exécution
                         if (containers.isEmpty()) {
                             echo "No containers running to scan"
                         } else {
-                            def containers = [:]
+                            // Dictionnaire pour stocker les tâches parallèles
+                            def containerScans = [:]
+
                             containers.each { container ->
-                                 containerScans["Scan ${container}"] = {
+                                containerScans["Scan ${container}"] = {
                                     try {
+                                        // Récupérer l'image utilisée par chaque conteneur
                                         def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
+
+                                        // Scanner l'image avec Trivy
                                         echo "Scanning container image: ${image} with Trivy"
                                         sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
+
+                                        // Archiver le rapport HTML généré pour chaque conteneur
                                         sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
                                     } catch (Exception e) {
                                         echo "Failed to scan container ${container}: ${e.getMessage()}"
                                     }
-                                 }
+                                }
                             }
-                        parallel containerScans
+
+                            // Exécuter les scans en parallèle
+                            parallel containerScans
                         }
                     }
-               }
+                }
             }
-         }
+        }
+
 
          stage('Archive Reports') {
             steps {
