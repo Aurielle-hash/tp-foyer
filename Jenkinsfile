@@ -55,7 +55,7 @@ pipeline {
             }
         }
         */
-/*
+            /*
         stage('Security Scan') {
             steps {
                 script {
@@ -65,52 +65,22 @@ pipeline {
                     sh 'docker run --rm dhouari/devsecops '
                 }
             }
-        }
+        }*/
 
-        stage('Archive and Publish Security Report') {
-            steps {
-                script {
-                    // Archive the security report so it's available in Jenkins
-                    archiveArtifacts artifacts: 'security-report.txt', allowEmptyArchive: true
 
-                    // Optionally, you can publish it as an HTML report (if available in that format)
-                    publishHTML([
-                        reportName: 'Security Report Dev-sectool Server-Hardening Prod phase',
-                        reportDir: '/tp-foyer',          // Current directory
-                        reportFiles: 'index.html', // Change this to HTML if you have an HTML report
-                        keepAll: true,
-                        alwaysLinkToLastBuild: true,
-                        allowMissing: true // If the report is missing, the build won't fail
-                    ])
-                }
-            }
-        }/*
 
-        /*
+
         stage('MVN Test') {
             steps {
                 echo "Test avec maven"
                 sh "mvn -X test"
             }
         }
-        */
-
-
-        stage('Maven SonarQube') {
+                   /*
+        stage('Publish SonarQube Report') {
             steps {
-                echo "Sonarqube analysis"
-               // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
-                           sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
-            }
-        }
-stage('Publish SonarQube Report') {
-    steps {
         script {
-            // Archive the SonarQube report (this assumes the report is generated as an HTML file)
-            // Modify the path if necessary depending on your SonarQube configuration
-            archiveArtifacts artifacts: '**/target/sonar-report.html', allowEmptyArchive: true
-
-            // Optionally, publish it as an HTML report (if available in that format)
+            archiveArtifacts artifacts: target/sonar-report.html', allowEmptyArchive: true
             publishHTML([
                 reportName: 'SonarQube Report',
                 reportDir: 'target',           // Report directory (adjust if necessary)
@@ -119,10 +89,16 @@ stage('Publish SonarQube Report') {
                 alwaysLinkToLastBuild: true,
                 allowMissing: true // If the report is missing, the build won't fail
             ])
-        }
+      }*/
+           stage('Maven SonarQube') {
+                  steps {
+                      echo "Sonarqube analysis"
+                     // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
+                 sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
+                  }
+              }
     }
 }
-
 
         stage('NEXUS') {
             steps {
@@ -134,7 +110,7 @@ stage('Publish SonarQube Report') {
         }
 
 
-        /*
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -148,9 +124,9 @@ stage('Publish SonarQube Report') {
                 script {
                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
-                }
+                    sh'docker run –p 8080:8080 benhammedmaissa/tpfoyer-devops-5.0.0'                }
             }
         }
-        */
+
     }
 }
