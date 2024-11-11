@@ -65,12 +65,10 @@ pipeline {
                     sh 'docker run --rm dhouari/devsecops '
                 }
             }
-        }*/
+        }
 
 
-
-
-       /* stage('MVN Test') {
+       stage('MVN Test') {
             steps {
                 echo "Test avec maven"
                 sh "mvn -X test"
@@ -83,11 +81,7 @@ pipeline {
                      // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                  sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                   }
-              }*/
-
-
-
-
+              }
 
         stage('NEXUS') {
             steps {
@@ -97,17 +91,15 @@ pipeline {
                 }
             }
         }
-
-
-/*
+        */
         stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t benhammedmaissa/tpfoyer-devops-5.0.0 .'
                 }
             }
-        }*/
-/*
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
@@ -115,8 +107,8 @@ pipeline {
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
                                  }
             }
-        }*/
-        /*
+        }
+
             stage('Docker Compose Up') {
                     steps {
                         script {
@@ -124,7 +116,7 @@ pipeline {
                             sh 'docker-compose -f docker-compose.yml up -d --build'
                         }
                     }
-                }*/
+                }
 
 }
 }
