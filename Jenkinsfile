@@ -75,7 +75,9 @@ pipeline {
                             // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
                             def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
                             def reportsDir = "trivy-reports/"
+                            def htmlReportsDir = "trivy-reports-html/"
                             sh "mkdir -p ${reportsDir}"
+                            sh "mkdir -p ${htmlReportsDir}"
 
                             // Exécuter un scan Trivy pour chaque conteneur en parallèle
                             parallel containerIds.collectEntries { containerId ->
@@ -100,6 +102,9 @@ pipeline {
                                         --docker-password \$DOCKER_PASSWORD \
                                         ${image}
                                         """
+                                        // Convertir le rapport JSON en HTML après le scan
+                                        def htmlReportPath = "${htmlReportsDir}/trivy-report-${containerId}.html"
+                                        sh "trivy report --format html --input ${jsonReportPath} --output ${htmlReportPath}"
                                     } catch (Exception e) {
                                         echo "Failed to scan container ${containerId}: ${e}"
                                     }
@@ -116,7 +121,7 @@ pipeline {
          stage('Archive Reports') {
              steps {
                  dir("tp-foyer") {
-                     archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
+                     archiveArtifacts artifacts: "trivy-reports/*.json, trivy-reports-html/*.html", allowEmptyArchive: true
                  }
              }
          }
