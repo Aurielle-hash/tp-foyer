@@ -75,7 +75,6 @@ pipeline {
                             // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
                             def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
                             def reportsDir = "trivy-reports/"
-                            def htmlReportsDir = "trivy-reports-html/"
                             sh "mkdir -p ${reportsDir}"
                             sh "mkdir -p ${htmlReportsDir}"
 
@@ -84,8 +83,8 @@ pipeline {
                                 ["Scan ${containerId}": {
                                     try {
                                         // Récupérer l'image associée à l'ID du conteneur
-                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' $containerId", returnStdout: true).trim()
-                                        echo "Scanning container image: $image with Trivy"
+                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
+                                        echo "Scanning container image: ${image} with Trivy"
 
                                         // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
                                         sh """
@@ -100,12 +99,8 @@ pipeline {
                                         --sonar-token \$SONAR_TOKEN \
                                         --docker-user \$DOCKER_USERNAME \
                                         --docker-password \$DOCKER_PASSWORD \
-                                        $image
+                                        ${image}
                                         """
-
-                                        // Convertir le rapport JSON en HTML après le scan
-                                        def htmlReportPath = "${htmlReportsDir}/trivy-report-${containerId}.html"
-                                        sh "trivy report --format html --input ${jsonReportPath} --output ${htmlReportPath}"
                                     } catch (Exception e) {
                                         echo "Failed to scan container ${containerId}: ${e}"
                                     }
@@ -122,22 +117,7 @@ pipeline {
          stage('Archive Reports') {
              steps {
                  dir("tp-foyer") {
-                     archiveArtifacts artifacts: "trivy-reports/*.json, trivy-reports-html/*.html", allowEmptyArchive: true
-                 }
-             }
-         }
-         stage('Publish Trivy HTML Reports') {
-             steps {
-                 dir("tp-foyer") {
-                     // Publier les rapports HTML générés dans Jenkins
-                     publishHTML(
-                         target: [
-                             reportName: 'Trivy Security Scan Report',
-                             reportDir: 'trivy-reports-html', // Répertoire contenant les rapports HTML
-                             reportFiles: '*.html',           // Fichiers HTML à afficher
-                             keepAll: true
-                         ]
-                     )
+                     archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
                  }
              }
          }
