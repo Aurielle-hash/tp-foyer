@@ -76,7 +76,7 @@ pipeline {
                 sh "mvn -X test"
             }
         }
-/*
+
            stage('Maven SonarQube') {
                   steps {
                    echo "Sonarqube analysis"
@@ -99,15 +99,15 @@ pipeline {
         }
 */
 
-
+/*
         stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t benhammedmaissa/tpfoyer-devops-5.0.0 .'
                 }
             }
-        }
-
+        }*/
+/*
         stage('Push Docker Image') {
             steps {
                 script {
@@ -115,7 +115,8 @@ pipeline {
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
                                  }
             }
-        }
+        }*/
+        /*
             stage('Docker Compose Up') {
                     steps {
                         script {
@@ -123,7 +124,7 @@ pipeline {
                             sh 'docker-compose -f docker-compose.yml up -d --build'
                         }
                     }
-                }
+                }*/
 
 }
 }
