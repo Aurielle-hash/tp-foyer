@@ -63,43 +63,47 @@ pipeline {
         }
         */
 
-        stage('Docker Security Scanning with Trivy') {
-                     steps {
-                         script {
+         stage('Docker Security Scanning with Trivy') {
+            steps {
+                dir('tp-foyer') {
+                    script {
                              // Liste des conteneurs en cours d'exécution
-                             def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n')
+                        def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n')
 
                              // Si aucun conteneur n'est en cours d'exécution
-                             if (containers.isEmpty()) {
-                                 echo "No containers running to scan"
-                             } else {
-                                 containers.each { container ->
+                        if (containers.isEmpty()) {
+                            echo "No containers running to scan"
+                        } else {
+                            containers.each { container ->
                                      // Récupérer l'image utilisée par chaque conteneur
-                                     def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
+                                def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${container}", returnStdout: true).trim()
 
                                      // Scanner l'image avec Trivy
-                                     echo "Scanning container image: ${image} with Trivy"
-                                     sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
+                                echo "Scanning container image: ${image} with Trivy"
+                                sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format html --output trivy-report-${container}.html ${image}"
 
                                      // Archiver le rapport HTML généré pour chaque conteneur
-                                     sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
-                                 }
-                             }
-                         }
-                     }
-        }
+                                sh "mv trivy-report-${container}.html ${WORKSPACE}/trivy-reports/"
+                            }
+                        }
+                    }
+               }
+            }
+         }
 
-        stage('Archive Reports') {
-                     steps {
-                         script {
-                             // Créer un répertoire pour stocker les rapports
-                             sh "mkdir -p ${WORKSPACE}/trivy-reports/"
+         stage('Archive Reports') {
+            steps {
+                dir('tp-foyer') {
+                    script {
+                      // Créer un répertoire pour stocker les rapports
+                        sh "mkdir -p ${WORKSPACE}/trivy-reports/"
 
-                             // Déplacer les rapports générés vers un répertoire spécifique
-                             archiveArtifacts artifacts: 'trivy-reports/*.html', allowEmptyArchive: true
-                         }
-                     }
-        }
+                      // Déplacer les rapports générés vers un répertoire spécifique
+                        archiveArtifacts artifacts: 'trivy-reports/*.html', allowEmptyArchive: true
+                    }
+                }
+            }
+         }
 
          stage('MVN Sonarqube') {
             steps {
