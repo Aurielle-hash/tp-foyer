@@ -68,7 +68,7 @@ pipeline {
                 dir('tp-foyer') {
                     script {
                         // Liste des conteneurs en cours d'exécution
-                        def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n')
+                        def containers = sh(script: 'docker ps -q', returnStdout: true).trim().split('\n').toList()
 
                         // Si aucun conteneur n'est en cours d'exécution
                         if (containers.isEmpty()) {
