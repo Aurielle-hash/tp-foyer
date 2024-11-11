@@ -59,6 +59,8 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
+                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
+
                     sh 'docker pull devsec/security-checker'
                     sh 'docker run --rm devsec/security-checker benhammedmaissa/tpfoyer-devops-5.0.0'
                 }
