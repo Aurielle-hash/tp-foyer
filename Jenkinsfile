@@ -62,34 +62,55 @@ pipeline {
             }
         }
         */
-         stage('Docker Security Scanning with Trivy') {
-             steps {
-                 dir("tp-foyer") {
-                     script {
-                         // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
-                         def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
-                         def reportsDir = "trivy-reports/"
-                         sh "mkdir -p ${reportsDir}"
+        stage('Docker Security Scanning with Trivy') {
+            steps {
+                dir("tp-foyer") {
+                    script {
+                        // Injecter les identifiants de Nexus, SonarQube et Docker Hub
+                        withCredentials([
+                            string(credentialsId: '11ea0d21-5ae7-4510-bfdf-6cf8d80558d3', variable: 'SONAR_TOKEN'), // SonarQube token
+                            usernamePassword(credentialsId: 'bcc1b017-d8af-459d-883d-133048e255b8', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD'), // Nexus credentials
+                            usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD') // Docker Hub credentials
+                        ]) {
+                            // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
+                            def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
+                            def reportsDir = "trivy-reports/"
+                            sh "mkdir -p ${reportsDir}"
 
-                         // Exécuter un scan Trivy pour chaque conteneur en parallèle
-                         parallel containerIds.collectEntries { containerId ->
-                             ["Scan ${containerId}": {
-                                 try {
-                                     // Récupérer l'image associée à l'ID du conteneur
-                                     def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
-                                     echo "Scanning container image: ${image} with Trivy"
+                            // Exécuter un scan Trivy pour chaque conteneur en parallèle
+                            parallel containerIds.collectEntries { containerId ->
+                                ["Scan ${containerId}": {
+                                    try {
+                                        // Récupérer l'image associée à l'ID du conteneur
+                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
+                                        echo "Scanning container image: ${image} with Trivy"
 
-                                     // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
-                                     sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format json --output ${reportsDir}/trivy-report-${containerId}.json ${image}"
-                                 } catch (Exception e) {
-                                     echo "Failed to scan container ${containerId}: ${e}"
-                                 }
-                             }]
-                         }
-                     }
-                 }
-             }
-         }
+                                        // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
+                                        sh """
+                                        trivy image \
+                                        --severity HIGH,CRITICAL \
+                                        --exit-code 1 \
+                                        --no-progress \
+                                        --format json \
+                                        --output ${reportsDir}/trivy-report-${containerId}.json \
+                                        --username \$NEXUS_USERNAME \
+                                        --password \$NEXUS_PASSWORD \
+                                        --sonar-token \$SONAR_TOKEN \
+                                        --docker-user \$DOCKER_USERNAME \
+                                        --docker-password \$DOCKER_PASSWORD \
+                                        ${image}
+                                        """
+                                    } catch (Exception e) {
+                                        echo "Failed to scan container ${containerId}: ${e}"
+                                    }
+                                }]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
          // Étape pour archiver les rapports de Trivy
          stage('Archive Reports') {
@@ -166,7 +187,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: '8b6e20fb-38d6-41ce-a2f5-7a32a513881c',
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
+                    sh 'docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD' // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
                     sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
                   //  sh "docker push $FRONTEND_IMAGE"
 
