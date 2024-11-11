@@ -88,15 +88,12 @@ pipeline {
                         }
                     }
 
-/*
                         // Étape pour archiver les rapports de Trivy
                         stage('Archive Reports') {
                                      steps {
-                                         dir("tp-foyer") {
                                              archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
-                                         }
                                      }
-                        }*/
+                        }
 
             stage('Archive Reports') {
                   steps {
