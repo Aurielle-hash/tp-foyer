@@ -59,10 +59,29 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
+                    sh 'docker login -u benhammedmaissa -p Meyssouna21!'
 
                     sh 'docker pull dhouari/devsecops' // normalement hedhi
                     sh 'docker run --rm dhouari/devsecops '
+                }
+            }
+        }
+
+        stage('Archive and Publish Security Report') {
+            steps {
+                script {
+                    // Archive the security report so it's available in Jenkins
+                    archiveArtifacts artifacts: 'security-report.txt', allowEmptyArchive: true
+
+                    // Optionally, you can publish it as an HTML report (if available in that format)
+                    publishHTML([
+                        reportName: 'Security Report Dev-sectool Server-Hardening Prod phase',
+                        reportDir: '.',          // Current directory
+                        reportFiles: 'security-report.txt', // Change this to HTML if you have an HTML report
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: true // If the report is missing, the build won't fail
+                    ])
                 }
             }
         }
