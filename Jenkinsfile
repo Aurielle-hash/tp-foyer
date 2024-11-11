@@ -39,17 +39,17 @@ pipeline {
         }
         stage('Publish Dependency-Check Report') {
             steps {
-
+                    dir('tp-foyer') {
                     echo 'Publication du rapport OWASP Dependency-Check'
                     publishHTML(
                         target: [
                             reportName: 'OWASP Dependency-Check Report',
-                            reportDir: 'target/dependency-check-report', // Le répertoire où le rapport est généré
+                            reportDir: '/', // Le répertoire où le rapport est généré
                             reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
                             keepAll: true
                        ]
                     )
-
+                }
             }
         }
 /*
