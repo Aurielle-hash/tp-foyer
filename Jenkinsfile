@@ -47,6 +47,7 @@ pipeline {
                             reportDir: 'target/dependency-check-report.html', // Le répertoire où le rapport est généré
                             reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
                             keepAll: true
+                            alwaysLinkToLastBuild: false
                        ]
                     )
                 }
