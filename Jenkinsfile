@@ -57,14 +57,12 @@ pipeline {
 
   stage('Run Ansible Playbook') {
       steps {
-          echo 'Running Ansible Playbook on Vagrant...'
-          sshagent(credentials: ['SSHAnsible']) { // Replace 'SSHAnsible' with your Jenkins credential ID
-              sh """
-              ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml
-              """
+          sshagent(credentials: ['SSHAnsible']) {  // Replace 'SSHAnsible' with the ID of your Jenkins SSH credential
+              sh 'ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml'
           }
       }
   }
+
 
 
 
