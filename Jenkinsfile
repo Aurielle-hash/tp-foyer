@@ -54,14 +54,15 @@ pipeline {
                 }
             }
         }
-stage('Run Ansible Playbook') {
-    steps {
-        echo 'Running Ansible Playbook on Vagrant...'
-        sshagent(['SSHansible']) {
-            sh 'ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml -vvv'
-        }
-    }
-}
+
+
+ stage('Run Ansible Playbook') {
+     steps {
+         echo 'Running Ansible Playbook on Vagrant...'
+         sh 'ansible-playbook -i /home/vagrant/inventory /home/vagrant/playbook.yml -vvv'
+     }
+ }
+
 
 
 
