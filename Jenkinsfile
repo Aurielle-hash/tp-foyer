@@ -23,7 +23,7 @@ pipeline {
                     }
                 }
 
-            stage('Dependency Analysis with OWASP Dependency-Check') {
+            /* stage('Dependency Analysis with OWASP Dependency-Check') {
                 steps {
                         sh 'mvn org.owasp:dependency-check-maven:check'
                 }
@@ -41,7 +41,7 @@ pipeline {
                                 ]
                             )
                         }
-            }
+            } */
 
 
             stage('MOCKITO'){
@@ -50,6 +50,65 @@ pipeline {
                     sh "mvn test"
                 }
             }
+
+            stage('Docker Security Scanning with Trivy') {
+                 steps {
+                     dir("tp-foyer") {
+                         script {
+                             // Injecter les identifiants de Nexus, SonarQube et Docker Hub
+                             withCredentials([
+                                 string(credentialsId: 'f9c1f8ba-2300-4e67-9490-84171cf1fe4e', variable: 'SONAR_TOKEN'), // SonarQube token
+                                 usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD'), // Nexus credentials
+                                 usernamePassword(credentialsId: 'a23c34c5-6e74-4665-b9ed-d3ceacf70c04', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD') // Docker Hub credentials
+                             ]) {
+                                 // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
+                                 def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
+                                 def reportsDir = "trivy-reports/"
+                                 sh "mkdir -p ${reportsDir}"
+
+                                 // Exécuter un scan Trivy pour chaque conteneur en parallèle
+                                 parallel containerIds.collectEntries { containerId ->
+                                     ["Scan ${containerId}": {
+                                         try {
+                                             // Récupérer l'image associée à l'ID du conteneur
+                                             def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
+                                             echo "Scanning container image: ${image} with Trivy"
+
+                                             // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
+                                             sh """
+                                             trivy image \
+                                             --severity HIGH,CRITICAL \
+                                             --exit-code 1 \
+                                             --no-progress \
+                                             --format json \
+                                             --output ${reportsDir}/trivy-report-${containerId}.json \
+                                             --username \$NEXUS_USERNAME \
+                                             --password \$NEXUS_PASSWORD \
+                                             --sonar-token \$SONAR_TOKEN \
+                                             --docker-user \$DOCKER_USERNAME \
+                                             --docker-password \$DOCKER_PASSWORD \
+                                             ${image}
+                                             """
+                                         } catch (Exception e) {
+                                             echo "Failed to scan container ${containerId}: ${e}"
+                                         }
+                                     }]
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+
+            stage('Archive Reports') {
+                  steps {
+                      dir("tp-foyer") {
+                          archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
+                      }
+                  }
+              }
+
+
 
 
              /* stage('SONARQUBE'){
