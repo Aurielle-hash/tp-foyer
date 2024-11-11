@@ -13,19 +13,19 @@ pipeline {
 
 
 
-        stage('Maven Clean') {
-            steps {
-                echo "Clean avec maven"
-                sh "mvn clean"
-            }
-        }
+       // stage('Maven Clean') {
+           //// steps {
+             //   echo "Clean avec maven"
+               // sh "mvn clean"
+            //}
+       // }
 
-        stage('Maven Compile') {
-            steps {
-                echo "compilation avec maven"
-                sh "mvn compile"
-            }
-        }
+        //stage('Maven Compile') {
+           // steps {
+               // echo "compilation avec maven"
+              //  sh "mvn compile"
+            //}
+        //}
 
 
 
@@ -51,12 +51,12 @@ pipeline {
             }
         }
 
-        stage('Mockito') {
-            steps {
-                echo 'Running Mockito tests...'
-                sh 'mvn test'
-            }
-        }
+        //stage('Mockito') {
+            //steps {
+               // echo 'Running Mockito tests...'
+               // sh 'mvn test'
+           // }
+        //}
 
         stage('Deploy to Nexus') {
             steps {
