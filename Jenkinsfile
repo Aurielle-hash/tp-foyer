@@ -52,50 +52,52 @@ pipeline {
             }
 
             stage('Docker Security Scanning with Trivy') {
-                           steps {
-                                   script {
-                                           // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
-                                           def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
-                                           def reportsDir = "trivy-reports/"
-                                           sh "mkdir -p ${reportsDir}"
+                        steps {
+                            dir("tp-foyer") {
+                                script {
+                                        // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
+                                        def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
+                                        def reportsDir = "trivy-reports/"
+                                        sh "mkdir -p ${reportsDir}"
 
-                                           // Exécuter un scan Trivy pour chaque conteneur en parallèle
-                                           parallel containerIds.collectEntries { containerId ->
-                                               ["Scan ${containerId}": {
-                                                   try {
-                                                       // Récupérer l'image associée à l'ID du conteneur
-                                                       def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
-                                                       echo "Scanning container image: ${image} with Trivy"
+                                        // Exécuter un scan Trivy pour chaque conteneur en parallèle
+                                        parallel containerIds.collectEntries { containerId ->
+                                            ["Scan ${containerId}": {
+                                                try {
+                                                    // Récupérer l'image associée à l'ID du conteneur
+                                                    def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
+                                                    echo "Scanning container image: ${image} with Trivy"
 
-                                                       // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
-                                                       sh """
-                                                       trivy image \
-                                                       --severity HIGH,CRITICAL \
-                                                       --exit-code 1 \
-                                                       --no-progress \
-                                                       --format json \
-                                                       --output ${reportsDir}/trivy-report-${containerId}.json \
-                                                       ${image}
-                                                       """
+                                                    // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
+                                                    sh """
+                                                    trivy image \
+                                                    --severity HIGH,CRITICAL \
+                                                    --exit-code 1 \
+                                                    --no-progress \
+                                                    --format json \
+                                                    --output ${reportsDir}/trivy-report-${containerId}.json \
+                                                    ${image}
+                                                    """
 
-                                                   } catch (Exception e) {
-                                                       echo "Failed to scan container ${containerId}: ${e}"
-                                                       }
-                                               }]
-                                           }
+                                                } catch (Exception e) {
+                                                    echo "Failed to scan container ${containerId}: ${e}"
+                                                }
+                                            }]
+                                        }
 
-                                   }
-                           }
-            }
+                                }
+                            }
+                        }
+                    }
 
 
                         // Étape pour archiver les rapports de Trivy
                         stage('Archive Reports') {
-                            steps {
-                                dir("tp-foyer") {
-                                    archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
-                                }
-                            }
+                                     steps {
+                                         dir("tp-foyer") {
+                                             archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
+                                         }
+                                     }
                         }
 
             stage('Archive Reports') {
@@ -134,7 +136,7 @@ pipeline {
                         """
                 }
             }
-        } */
+        }
 
             stage('Building image'){
                 steps {
