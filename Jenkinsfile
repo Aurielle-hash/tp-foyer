@@ -23,6 +23,14 @@ pipeline {
             }
         }
 
+
+               stage('Code Checkout') {
+                       steps {
+                           git branch: 'Chambre',
+                               credentialsId: 'd724128d-d251-4b7f-9ba8-ffd447a8a597',
+                               url: "https://github.com/Aurielle-hash/tp-foyer.git"
+                }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') { // Use the SonarQube instance configured in Jenkins
