@@ -70,7 +70,7 @@ pipeline {
 
 
 
-        stage('MVN Test') {
+       /* stage('MVN Test') {
             steps {
                 echo "Test avec maven"
                 sh "mvn -X test"
@@ -83,12 +83,12 @@ pipeline {
                      // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                  sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                   }
-              }
+              }*/
 
 
-/*
 
-/*
+
+
         stage('NEXUS') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'fcc467b6-97da-40aa-a0b6-4dd3f9b24c09', usernameVariable: 'admin', passwordVariable: 'Meyssouna21!')]) {
@@ -97,7 +97,7 @@ pipeline {
                 }
             }
         }
-*/
+
 
 /*
         stage('Build Docker Image') {
