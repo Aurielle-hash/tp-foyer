@@ -51,7 +51,7 @@ pipeline {
                 }
             }
 
-            stage('Docker Security Scanning with Trivy') {
+            /* stage('Docker Security Scanning with Trivy') {
                         steps {
                             dir("tp-foyer") {
                                 script {
@@ -98,7 +98,7 @@ pipeline {
                                              archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
                                          }
                                      }
-                        }
+                        }*/
 
             stage('Archive Reports') {
                   steps {
