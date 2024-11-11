@@ -84,8 +84,8 @@ pipeline {
                                 ["Scan ${containerId}": {
                                     try {
                                         // Récupérer l'image associée à l'ID du conteneur
-                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' ${containerId}", returnStdout: true).trim()
-                                        echo "Scanning container image: ${image} with Trivy"
+                                        def image = sh(script: "docker inspect --format '{{.Config.Image}}' $containerId", returnStdout: true).trim()
+                                        echo "Scanning container image: $image with Trivy"
 
                                         // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
                                         sh """
@@ -95,13 +95,14 @@ pipeline {
                                         --no-progress \
                                         --format json \
                                         --output ${reportsDir}/trivy-report-${containerId}.json \
-                                        --username \${NEXUS_USERNAME} \
-                                        --password \${NEXUS_PASSWORD} \
-                                        --sonar-token \${SONAR_TOKEN} \
-                                        --docker-user \${DOCKER_USERNAME} \
-                                        --docker-password \${DOCKER_PASSWORD} \
-                                        ${image}
+                                        --username \$NEXUS_USERNAME \
+                                        --password \$NEXUS_PASSWORD \
+                                        --sonar-token \$SONAR_TOKEN \
+                                        --docker-user \$DOCKER_USERNAME \
+                                        --docker-password \$DOCKER_PASSWORD \
+                                        $image
                                         """
+
                                         // Convertir le rapport JSON en HTML après le scan
                                         def htmlReportPath = "${htmlReportsDir}/trivy-report-${containerId}.html"
                                         sh "trivy report --format html --input ${jsonReportPath} --output ${htmlReportPath}"
@@ -151,8 +152,8 @@ pipeline {
                                         variable: 'SONAR_TOKEN')]) {
                         sh """
                         mvn sonar:sonar \
-                        -Dsonar.host.url=${SONAR_HOST_URL} \
-                        -Dsonar.login=\${SONAR_TOKEN}
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=\$SONAR_TOKEN
                         """
                     }
                 }
@@ -170,8 +171,8 @@ pipeline {
                         sh """
                         mvn deploy \
                         -DskipTests \
-                        -Dusername=\${NEXUS_USERNAME} \
-                        -Dpassword=\${NEXUS_PASSWORD}
+                        -Dusername=\$NEXUS_USERNAME \
+                        -Dpassword=\$NEXUS_PASSWORD
                         """
                     }
                 }
@@ -184,7 +185,7 @@ pipeline {
             steps {
                 echo "creating backend docker image"
                 dir('tp-foyer') {
-                    sh "docker build -f Dockerfile -t ${BACKEND_IMAGE} ."
+                    sh "docker build -f Dockerfile -t $BACKEND_IMAGE ."
                 }
             }
         }
@@ -209,7 +210,7 @@ pipeline {
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \${DOCKER_USERNAME} -p \${DOCKER_PASSWORD}" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
-                    sh "docker push ${BACKEND_IMAGE}"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
+                    sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
                   //  sh "docker push $FRONTEND_IMAGE"
 
                 }
@@ -219,13 +220,13 @@ pipeline {
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
-                sh 'docker compose down' //arrete le conteneur s'il est deja en cours d'execution
+                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
 
                  /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
                  lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
-                sh 'docker compose up -d --build'
+                sh "docker compose up -d --build"
             }
         }
     }
