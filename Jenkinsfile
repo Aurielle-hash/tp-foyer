@@ -76,7 +76,7 @@ pipeline {
                     // Optionally, you can publish it as an HTML report (if available in that format)
                     publishHTML([
                         reportName: 'Security Report Dev-sectool Server-Hardening Prod phase',
-                        reportDir: '.',          // Current directory
+                        reportDir: '/tp-foyer',          // Current directory
                         reportFiles: 'index.html', // Change this to HTML if you have an HTML report
                         keepAll: true,
                         alwaysLinkToLastBuild: true,
@@ -95,14 +95,14 @@ pipeline {
         }
         */
 
-        /*
+
         stage('Maven SonarQube') {
             steps {
                 echo "Sonarqube analysis"
                 sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
             }
         }
-        */
+
 
         /*
         stage('NEXUS') {
