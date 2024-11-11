@@ -53,7 +53,6 @@ pipeline {
 
             stage('Docker Security Scanning with Trivy') {
                  steps {
-                     dir("tp-foyer") {
                          script {
                              // Injecter les identifiants de Nexus, SonarQube et Docker Hub
                              withCredentials([
@@ -96,15 +95,12 @@ pipeline {
                                  }
                              }
                          }
-                     }
                  }
              }
 
             stage('Archive Reports') {
                   steps {
-                      dir("tp-foyer") {
                           archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
-                      }
                   }
               }
 
