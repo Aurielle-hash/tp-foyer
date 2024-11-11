@@ -51,9 +51,8 @@ pipeline {
                 }
             }
 
-            /* stage('Docker Security Scanning with Trivy') {
+            stage('Docker Security Scanning with Trivy') {
                         steps {
-                            dir("tp-foyer") {
                                 script {
                                         // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
                                         def containerIds = sh(script: "docker ps -q", returnStdout: true).trim().split("\n")
@@ -86,11 +85,10 @@ pipeline {
                                         }
 
                                 }
-                            }
                         }
                     }
 
-
+/*
                         // Étape pour archiver les rapports de Trivy
                         stage('Archive Reports') {
                                      steps {
