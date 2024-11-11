@@ -31,10 +31,10 @@ pipeline {
         }
         stage('OWASP Dependency-Check') {
             steps {
-                dir('tp-foyer') {
+
                     echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
                     sh 'mvn org.owasp:dependency-check-maven:check'
-                }
+
             }
         }
         stage('Publish Dependency-Check Report') {
@@ -44,7 +44,7 @@ pipeline {
                     publishHTML(
                         target: [
                             reportName: 'OWASP Dependency-Check Report',
-                            reportDir: '/', // Le répertoire où le rapport est généré
+                            reportDir: 'target/dependency-check-report.html', // Le répertoire où le rapport est généré
                             reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
                             keepAll: true
                        ]
