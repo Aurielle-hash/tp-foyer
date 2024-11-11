@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('OWASP Dependency-Check') {
+       /* stage('OWASP Dependency-Check') {
             steps {
                 dir('tp-foyer') {
                     echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
@@ -62,7 +62,7 @@ pipeline {
             }
         }
 
-        /* stage('MVN Sonarqube') {
+         stage('MVN Sonarqube') {
             steps {
                 echo "analyse avec sonarqube"
                 dir('tp-foyer') {
@@ -77,6 +77,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Nexus Deploy') {
             steps {
@@ -96,6 +97,26 @@ pipeline {
             }
         }
 
+       */
+
+         stage('Docker Security Scanning with Trivy') {
+                    steps {
+                        dir('tp-foyer') {
+                            echo "Scanning Docker image for vulnerabilities with Trivy"
+                            sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress $BACKEND_IMAGE"
+                        }
+                    }
+         }
+
+                stage('Docker Compliance Check with Trivy') {
+                    steps {
+                        dir('tp-foyer') {
+                            echo "Checking Docker image for compliance with CIS Benchmarks"
+                        sh "trivy image --security-checks config --exit-code 1 --no-progress $BACKEND_IMAGE"
+                        }
+                    }
+                }
+
         stage('Building backend image') {
             steps {
                 echo "creating backend docker image"
@@ -105,13 +126,6 @@ pipeline {
             }
         }
 
-        stage('Cache Docker Image') {
-            steps {
-                echo "suppression du cache"
-                docker builder prune -a -f // -a pour supprimer tous les cache et -f pour forcer la suppression
-
-            }
-        }
 
         stage('building frontend image') {
             steps {
@@ -142,14 +156,14 @@ pipeline {
         stage('Start Docker Composer') {
             steps {
                 echo "starting docker composer"
-                sh "docker compose down" //arrete le conteneur s'il est deja en cours d'execution
+                sh 'docker compose down' //arrete le conteneur s'il est deja en cours d'execution
 
-                 *//*lance le conteneur en arriere plan pour permettre à jenkins
+                 /*lance le conteneur en arriere plan pour permettre à jenkins
                 de continuer la prochaine etape du pipeline sans attendrent que
                  ce service docker se termine et reconstruis les images déjà existantes
-                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile *//*
-                sh "docker compose up -d --build"
+                 lorsqu'on a eu à effectuer des modifs dans le code source ou dans dockerfile */
+                sh 'docker compose up -d --build'
             }
-        } */
+        }
     }
 }
