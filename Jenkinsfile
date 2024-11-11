@@ -148,7 +148,7 @@ pipeline {
         }
 
 
-        stage('building frontend image') {
+       /*  stage('building frontend image') {
             steps {
                 echo "creating frontend docker image"
                 dir('tp-foyer-frontend') {
@@ -157,7 +157,7 @@ pipeline {
                      sh "docker build -f Dockerfile-angular -t $FRONTEND_IMAGE ."
                }
             }
-        }
+        } */
 
         stage('Pushing image') {
             steps {
@@ -168,7 +168,7 @@ pipeline {
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD" // \$ permet de récupérer la valeur de la variable non lu par Jenkins mais par le shell
                     sh "docker push $BACKEND_IMAGE"  // "$" va permettre à Jenkins de récupérer la valeur de la variable BACKEND_IMAGE
-                    sh "docker push $FRONTEND_IMAGE"
+                  //  sh "docker push $FRONTEND_IMAGE"
 
                 }
             }
