@@ -114,14 +114,13 @@ pipeline {
                                              variable: 'SONAR_TOKEN')]) {
                         sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=\$SONAR_TOKEN"
                         }
-                    //sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=admin -Dsonar.password=giov@nniJB04"
                 }
             }
 
 
 
 
-            stage('Nexus Deploy') {
+            /* stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
                     withCredentials([usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321',
@@ -135,7 +134,7 @@ pipeline {
                         """
                 }
             }
-        }
+        } */
 
             stage('Building image'){
                 steps {
