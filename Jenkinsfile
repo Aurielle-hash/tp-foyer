@@ -9,6 +9,10 @@ pipeline {
             }
         }
 
+
+
+
+
         stage('Maven Clean') {
             steps {
                 echo "Clean avec maven"
@@ -24,12 +28,14 @@ pipeline {
         }
 
 
-               stage('Code Checkout') {
-                       steps {
-                           git branch: 'Chambre',
-                               credentialsId: 'd724128d-d251-4b7f-9ba8-ffd447a8a597',
-                               url: "https://github.com/Aurielle-hash/tp-foyer.git"
-                }
+
+        stage('Code Checkout') {
+            steps {
+                git branch: 'Chambre',
+                 credentialsId: 'd724128d-d251-4b7f-9ba8-ffd447a8a597',
+                 url: "https://github.com/Aurielle-hash/tp-foyer.git"
+        }
+        }
 
         stage('SonarQube Analysis') {
             steps {
