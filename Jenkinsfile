@@ -62,7 +62,7 @@ pipeline {
                      sh 'docker login -u benhammedmaissa -p Meyssouna21!'
 
                     sh 'docker pull dhouari/devsecops' // normalement hedhi
-                    sh 'docker run --rm dhouari/devsecops benhammedmaissa/tpfoyer-devops-5.0.0'
+                    sh 'docker run --rm devsec/security-checker '
                 }
             }
         }
