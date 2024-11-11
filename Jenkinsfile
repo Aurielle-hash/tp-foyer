@@ -77,7 +77,7 @@ pipeline {
                     publishHTML([
                         reportName: 'Security Report Dev-sectool Server-Hardening Prod phase',
                         reportDir: '.',          // Current directory
-                        reportFiles: 'security-report.txt', // Change this to HTML if you have an HTML report
+                        reportFiles: 'index.html', // Change this to HTML if you have an HTML report
                         keepAll: true,
                         alwaysLinkToLastBuild: true,
                         allowMissing: true // If the report is missing, the build won't fail
