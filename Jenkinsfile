@@ -76,29 +76,18 @@ pipeline {
                 sh "mvn -X test"
             }
         }
-                   /*
-        stage('Publish SonarQube Report') {
-            steps {
-        script {
-            archiveArtifacts artifacts: target/sonar-report.html', allowEmptyArchive: true
-            publishHTML([
-                reportName: 'SonarQube Report',
-                reportDir: 'target',           // Report directory (adjust if necessary)
-                reportFiles: 'sonar-report.html', // Change this if your report file has a different name
-                keepAll: true,
-                alwaysLinkToLastBuild: true,
-                allowMissing: true // If the report is missing, the build won't fail
-            ])
-      }*/
+
            stage('Maven SonarQube') {
                   steps {
-                      echo "Sonarqube analysis"
+                   echo "Sonarqube analysis"
                      // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                  sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                   }
               }
-    }
-}
+
+
+
+
 
         stage('NEXUS') {
             steps {
@@ -128,5 +117,6 @@ pipeline {
             }
         }
 
+}
 
 }
