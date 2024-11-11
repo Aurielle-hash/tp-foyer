@@ -92,6 +92,9 @@ pipeline {
             }
         }
         */
+
+
+        /*
         stage('Build Docker Image') {
             steps {
                 script {
@@ -108,11 +111,10 @@ pipeline {
                                  }
             }
         }
-
+              */
             stage('Docker Compose Up') {
                     steps {
                         script {
-                            // Lancer le docker-compose
                             sh 'docker-compose -f docker-compose.yml up -d --build'
                         }
                     }
