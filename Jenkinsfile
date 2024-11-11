@@ -102,7 +102,7 @@ pipeline {
                   steps {
                           archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
                   }
-              } */
+              }
 
 
 
@@ -120,7 +120,7 @@ pipeline {
 
 
 
-            /* stage('Nexus Deploy') {
+            stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
                     withCredentials([usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321',
