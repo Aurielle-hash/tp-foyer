@@ -109,12 +109,6 @@ pipeline {
 
 
                         // Étape pour archiver les rapports de Trivy
-                    /*     stage('Archive Reports') {
-                                     steps {
-                                             archiveArtifacts artifacts: "trivy-reports *//*.html", allowEmptyArchive: true
-                                     }
-                        }
- */
                         stage('Archive Reports') {
                                      steps {
                                              archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
