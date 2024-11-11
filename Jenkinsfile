@@ -99,10 +99,29 @@ pipeline {
         stage('Maven SonarQube') {
             steps {
                 echo "Sonarqube analysis"
-                sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
+               // sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
+                           sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=sqa_20a205482b7ba50ff560b9b70550aa31738cf780"
             }
         }
+stage('Publish SonarQube Report') {
+    steps {
+        script {
+            // Archive the SonarQube report (this assumes the report is generated as an HTML file)
+            // Modify the path if necessary depending on your SonarQube configuration
+            archiveArtifacts artifacts: '**/target/sonar-report.html', allowEmptyArchive: true
 
+            // Optionally, publish it as an HTML report (if available in that format)
+            publishHTML([
+                reportName: 'SonarQube Report',
+                reportDir: 'target',           // Report directory (adjust if necessary)
+                reportFiles: 'sonar-report.html', // Change this if your report file has a different name
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true // If the report is missing, the build won't fail
+            ])
+        }
+    }
+}
 
         /*
         stage('NEXUS') {
