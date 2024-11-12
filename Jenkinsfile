@@ -25,6 +25,7 @@ pipeline {
                 echo "compilation avec maven"
                 dir('tp-foyer') {
                     sh "mvn compile"
+                    sh "mvn package"
                 }
             }
         }
