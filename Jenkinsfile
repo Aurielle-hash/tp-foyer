@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-       /*  stage('OWASP Dependency-Check') {
+         stage('OWASP Dependency-Check') {
             steps {
                 dir('tp-foyer') {
                     echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
@@ -51,18 +51,18 @@ pipeline {
                      )
                 }
             }
-        } */
+        }
 
-        stage('MOCKITO Test') {
+       /*  stage('MOCKITO Test') {
             steps {
                 echo "test avec maven"
                 dir('tp-foyer') {
                     sh "mvn test"
                 }
             }
-        }
+        } */
 
-       /*  stage('Docker Security Scanning with Trivy') {
+         stage('Docker Security Scanning with Trivy') {
             steps {
                 dir("tp-foyer") {
                     script {
@@ -109,7 +109,7 @@ pipeline {
                      archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
                  }
              }
-         } */
+         }
 
 
 
@@ -130,7 +130,7 @@ pipeline {
         }
 
 
-         stage('Nexus Deploy') {
+       /*   stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
                 dir('tp-foyer') {
@@ -146,7 +146,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
 
 
