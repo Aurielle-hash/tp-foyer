@@ -37,7 +37,7 @@ pipeline {
        stage('MVN Test') {
             steps {
                 echo "Test avec maven"
-                sh "mvn test -Dtest=EtudiantserviceImplTestMock"
+                sh "mvn -X test "
                // mvn -X test -Dtest=EtudiantserviceImplTestMock
             }
         }
