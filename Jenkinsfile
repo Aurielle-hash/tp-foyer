@@ -130,7 +130,7 @@ pipeline {
         }
 
 
-       /*  stage('Nexus Deploy') {
+         stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
                 dir('tp-foyer') {
@@ -146,7 +146,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
 
 
 
