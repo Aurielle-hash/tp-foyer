@@ -30,42 +30,8 @@ pipeline {
             }
         }
 
-        /*
-        stage('OWASP Dependency-Check') {
-            steps {
-                echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
-                sh 'mvn org.owasp:dependency-check-maven:check'
-            }
-        }
 
-        stage('Publish Dependency-Check Report') {
-            steps {
-                dir('tp-foyer') {
-                    echo 'Publication du rapport OWASP Dependency-Check'
-                    publishHTML(
-                        target: [
-                            reportName: 'OWASP Dependency-Check Report',
-                            reportDir: '/', // Le répertoire où le rapport est généré
-                            reportFiles: 'index.html', // Le fichier HTML généré par OWASP Dependency-Check
-                            keepAll: true,
-                            alwaysLinkToLastBuild: false
-                        ]
-                    )
-                }
-            }
-        }
-        */
-            /*
-        stage('Security Scan') {
-            steps {
-                script {
-                    sh 'docker login -u benhammedmaissa -p Meyssouna21!'
 
-                    sh 'docker pull dhouari/devsecops' // normalement hedhi
-                    sh 'docker run --rm dhouari/devsecops '
-                }
-            }
-        }
 
 
        stage('MVN Test') {
@@ -82,7 +48,7 @@ pipeline {
                  sh "mvn sonar:sonar -Dsonar.host.url=http://192.168.56.44:9000 -Dsonar.login=admin -Dsonar.password=Meyssouna21!"
                   }
               }
-
+/*
         stage('NEXUS') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'fcc467b6-97da-40aa-a0b6-4dd3f9b24c09', usernameVariable: 'admin', passwordVariable: 'Meyssouna21!')]) {
@@ -91,10 +57,10 @@ pipeline {
                 }
             }
         }
-        */
+       */
 
 
-
+/*
         stage('Build Docker Image') {
             steps {
                 script {
@@ -119,6 +85,6 @@ pipeline {
                         }
                     }
                 }
-
+*/
 }
 }
