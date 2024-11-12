@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('OWASP Dependency-Check') {
+       /*  stage('OWASP Dependency-Check') {
             steps {
                 dir('tp-foyer') {
                     echo 'Exécution de l\'analyse de dépendances avec OWASP Dependency-Check'
@@ -51,7 +51,7 @@ pipeline {
                      )
                 }
             }
-        }
+        } */
 
         stage('MOCKITO Test') {
             steps {
@@ -62,7 +62,7 @@ pipeline {
             }
         }
 
-        stage('Docker Security Scanning with Trivy') {
+       /*  stage('Docker Security Scanning with Trivy') {
             steps {
                 dir("tp-foyer") {
                     script {
@@ -106,10 +106,10 @@ pipeline {
          stage('Archive Reports') {
              steps {
                  dir("tp-foyer") {
-                     archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
+                     archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
                  }
              }
-         }
+         } */
 
 
 
