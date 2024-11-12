@@ -13,29 +13,29 @@ pipeline {
 
 
 
-       // stage('Maven Clean') {
-           //// steps {
-             //   echo "Clean avec maven"
-               // sh "mvn clean"
-            //}
-       // }
-
-        //stage('Maven Compile') {
-           // steps {
-               // echo "compilation avec maven"
-              //  sh "mvn compile"
-            //}
-        //}
-
-
-
-        stage('Code Checkout') {
+       stage('Maven Clean') {
             steps {
-                git branch: 'Chambre',
-                 credentialsId: 'd724128d-d251-4b7f-9ba8-ffd447a8a597',
-                 url: "https://github.com/Aurielle-hash/tp-foyer.git"
+               echo "Clean avec maven"
+               sh "mvn clean"
+           }
+       }
+
+        stage('Maven Compile') {
+            steps {
+                echo "compilation avec maven"
+                sh "mvn compile"
+           }
         }
-        }
+
+
+
+        //stage('Code Checkout') {
+           // steps {
+            //    git branch: 'Chambre',
+             //    credentialsId: 'd724128d-d251-4b7f-9ba8-ffd447a8a597',
+               //  url: "https://github.com/Aurielle-hash/tp-foyer.git"
+       // }
+        //}
 
         stage('SonarQube Analysis') {
             steps {
@@ -51,12 +51,12 @@ pipeline {
             }
         }
 
-        //stage('Mockito') {
-            //steps {
-               // echo 'Running Mockito tests...'
-               // sh 'mvn test'
-           // }
-        //}
+        stage('Mockito') {
+            steps {
+                echo 'Running Mockito tests...'
+                sh 'mvn test'
+            }
+       }
 
         stage('Deploy to Nexus') {
             steps {
