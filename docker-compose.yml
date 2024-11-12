@@ -24,7 +24,12 @@ services:
         "spring.datasource.username" : "root",
         "spring.datasource.password" : "pwd",
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL8Dialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
+        "spring.jpa.hibernate.ddl-auto" : "update",
+        
+        "management.endpoints.web.exposure.include" : "prometheus",
+        "server.servlet.context.path" : "/tpfoyer",
+        "server.port" : "8082",
+        "management.endpoint.prometheus.enabled" : "true"
       }'
     stdin_open: true
     tty: true
