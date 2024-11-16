@@ -30,14 +30,15 @@ pipeline {
             }
         }
 
-      stage('Deploy with Ansible') {
-            steps {
-                script {
-                    // Execute the Ansible playbook
-                    sh 'ansible-playbook -i $ANSIBLE_HOSTS deploy.yml'
-                }
-            }
-        }
+     stage('Deploy with Ansible') {
+         steps {
+             script {
+                 // Print the environment variable for debugging
+                 sh 'echo "Inventory: $ANSIBLE_HOSTS"'
+                 sh 'ansible-playbook -i $ANSIBLE_HOSTS deploy.yml'
+             }
+         }
+     }
 
       /*stage('Dependency Check') {
           steps {
