@@ -31,25 +31,25 @@ pipeline {
         }
 
 
-             stage('Dependency Check') {
-                 steps {
-                     script {
-                         // Run Dependency-Check Analysis
-                         dependencyCheck additionalArguments: '''--scan .
-                             --format XML,HTML
-                             --project "tp-foyer"
-                             --out reports/dependency-check''',
-                             odcInstallation: 'Default'
-                     }
-                 }
-             }
+           stage('Dependency Check') {
+               steps {
+                   script {
+                       // Run Dependency-Check Analysis
+                       dependencyCheck additionalArguments: '''--scan .
+                           --format ALL
+                           --project "tp-foyer"
+                           --out reports/dependency-check''',
+                           odcInstallation: 'Default'
+                   }
+               }
+           }
 
-                    stage('Publish Report') {
-                         steps {
-                             // Publish the HTML report
-                             dependencyCheckPublisher pattern: '**/reports/dependency-check-report.html'
-                         }
-                     }
+                   stage('Publish Report') {
+                       steps {
+                        sh 'mkdir -p reports/dependency-check'
+                           dependencyCheckPublisher pattern: 'reports/dependency-check-report.html'
+                       }
+                   }
                  }
                     post {
                          always {
