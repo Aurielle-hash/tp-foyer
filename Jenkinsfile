@@ -29,6 +29,35 @@ pipeline {
                 sh "mvn clean package"
             }
         }
+
+
+             stage('Dependency Check') {
+                 steps {
+                     script {
+                         // Run Dependency-Check Analysis
+                         dependencyCheck additionalArguments: '''--scan .
+                             --format XML,HTML
+                             --project "tp-foyer"
+                             --out reports/dependency-check''',
+                             odcInstallation: 'Default'
+                     }
+                 }
+             }
+
+                    stage('Publish Report') {
+                         steps {
+                             // Publish the HTML report
+                             dependencyCheckPublisher pattern: '**/reports/dependency-check-report.html'
+                         }
+                     }
+                 }
+                    post {
+                         always {
+                             archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
+                         }
+                     }
+
+
         /*
   stage('NEXUS') {
             steps {
@@ -64,30 +93,30 @@ pipeline {
 
 
 
-        stage('Build Docker Image') {
+        /*stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t benhammedmaissa/tpfoyer-devops-5.0.0 .'
                 }
             }
-        }
+        } */
 
-        stage('Push Docker Image') {
+                   /* stage('Push Docker Image') {
             steps {
                 script {
                     sh 'docker login -u benhammedmaissa -p Meyssouna21!'
                     sh 'docker push benhammedmaissa/tpfoyer-devops-5.0.0'
                                  }
             }
-        }
+        }*/
 
-            stage('Docker Compose Up') {
+           /* stage('Docker Compose Up') {
                     steps {
                         script {
                             sh 'docker-compose -f docker-compose.yml up -d --build'
                         }
                     }
-                }
+                }*/
 
 }
 }
