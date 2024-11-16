@@ -30,8 +30,16 @@ pipeline {
             }
         }
 
+      stage('Deploy with Ansible') {
+            steps {
+                script {
+                    // Execute the Ansible playbook
+                    sh 'ansible-playbook -i $ANSIBLE_HOSTS deploy.yml'
+                }
+            }
+        }
 
-      stage('Dependency Check') {
+      /*stage('Dependency Check') {
           steps {
               script {
                   // Ensure output directory exists
@@ -53,6 +61,7 @@ pipeline {
                        dependencyCheckPublisher pattern: 'reports/dependency-check/dependency-check-report.html'
                    }
                }
+               */
 
 
 
