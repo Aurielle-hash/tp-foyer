@@ -1,0 +1,15 @@
+- hosts: app_servers
+  become: yes
+  tasks:
+    - name: Copy Spring Boot JAR file to the server
+      copy:
+        src: target/tp-foyer-5.0.0.jar
+        dest: /opt/apps/tp-foyer-5.0.0.jar
+
+    - name: Start the Spring Boot application
+      shell: nohup java -jar /opt/apps/tp-foyer-5.0.0.jar &
+
+    - name: Verify the application is running
+      uri:
+        url: http://192.168.56.44:8080/health
+        status_code: 200
