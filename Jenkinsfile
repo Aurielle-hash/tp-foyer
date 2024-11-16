@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+   environment {
+        APP_HOST = '127.0.0.1'
+    }
     stages {
         stage('Checkout GIT') {
             steps {
@@ -30,7 +32,18 @@ pipeline {
             }
         }
 
-     stage('Deploy with Ansible') {
+
+            stages {
+                stage('Scan All Ports') {
+                    steps {
+                        script {
+                            sh' nmap -p 1-65535 $APP_HOST'
+                        }
+                    }
+                }
+            }
+
+     /*stage('Deploy with Ansible') {
          steps {
              script {
                  // Print the environment variable for debugging
@@ -39,7 +52,7 @@ pipeline {
              }
          }
      }
-
+*/
       /*stage('Dependency Check') {
           steps {
               script {
