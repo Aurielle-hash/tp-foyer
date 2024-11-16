@@ -33,15 +33,13 @@ pipeline {
         }
 
 
-            stages {
-                stage('Scan All Ports') {
+                    stage('Scan All Ports') {
                     steps {
                         script {
                             sh' nmap -p 1-65535 $APP_HOST'
                         }
                     }
                 }
-            }
 
      /*stage('Deploy with Ansible') {
          steps {
