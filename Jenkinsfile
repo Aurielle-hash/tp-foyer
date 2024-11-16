@@ -31,31 +31,34 @@ pipeline {
         }
 
 
-           stage('Dependency Check') {
-               steps {
-                   script {
-                       // Run Dependency-Check Analysis
-                       dependencyCheck additionalArguments: '''--scan .
-                           --format ALL
-                           --project "tp-foyer"
-                           --out reports/dependency-check''',
-                           odcInstallation: 'Default'
-                   }
-               }
-           }
+        stage('Dependency Check') {
+            steps {
+                script {
+                    // Ensure output directory exists
+                    sh 'mkdir -p reports/dependency-check'
 
-                   stage('Publish Report') {
-                       steps {
-                        sh 'mkdir -p reports/dependency-check'
-                           dependencyCheckPublisher pattern: 'reports/dependency-check-report.html'
+                    // Run Dependency-Check Analysis
+                    dependencyCheck additionalArguments: '''--scan .
+                        --format ALL
+                        --project "tp-foyer"
+                        --out reports/dependency-check''',
+                        odcInstallation: 'Default'
+                }
+            }
+        }
+
+                 stage('Publish Report') {
+                     steps {
+                         dependencyCheckPublisher pattern: 'reports/dependency-check/dependency-check-report.html'
+                     }
+                 }
+
+                   post {
+                       always {
+                           archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
                        }
                    }
-                 }
-                    post {
-                         always {
-                             archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
-                         }
-                     }
+
 
 
         /*
