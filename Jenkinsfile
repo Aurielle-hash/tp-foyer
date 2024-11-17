@@ -124,55 +124,78 @@ pipeline {
             }
         }*/
 
-            stage('Docker Compose Up') {
-                    steps {
-                        script {
-                            sh 'docker-compose -f docker-compose.yml up -d --build'
+           // stage('Docker Compose Up') {
+             //       steps {
+               //         script {
+                 //           sh 'docker-compose -f docker-compose.yml up -d --build'
+                   //     }
+                    //}
+                //}
+
+               stage('Setting up OWASP ZAP docker container') {
+                      steps {
+                           script {
+                                       echo "Pulling up last OWASP ZAP container --> Start"
+                                      sh 'docker login -u benhammedmaissa -p Meyssouna21!'
+                                        sh 'docker pull rtencatexebia/owasp-zap'
+                                       echo "Pulling up last VMS container --> End"
+                                        echo "Starting container --> Start"
+                                       sh """
+                                        docker run -dt --name owasp \
+                                        rtencatexebia/owasp-zap \
+                                        /bin/bash
+                                        """
+                                }
+                            }
                         }
+
+
+            stage('Running OWASP ZAP Scan') {
+                steps {
+                    script {
+                        echo "Running OWASP ZAP scan --> Start"
+
+                        // Define target URL for your application
+                        def targetUrl = 'http://127.0.0.1'
+
+                        // Start the ZAP proxy in daemon mode
+                        sh """
+                            docker exec -d owasp zap-baseline.py -t $targetUrl
+                        """
+
+                        // Wait for the scan to finish (You can adjust the timeout based on the app size)
+                        echo "Waiting for ZAP to complete scan --> Start"
+                        sleep 600 // Adjust as necessary based on the application size and complexity
+                        echo "Waiting for ZAP to complete scan --> End"
                     }
                 }
+            }
 
-               //stage('Setting up OWASP ZAP docker container') {
-                 //     steps {
-                   //        script {
-                     //                   echo "Pulling up last OWASP ZAP container --> Start"
-                       //                 sh 'docker login -u benhammedmaissa -p Meyssouna21!'
-                         //               sh 'docker pull rtencatexebia/owasp-zap'
-                           //             echo "Pulling up last VMS container --> End"
-                             //           echo "Starting container --> Start"
-                               //         sh """
-                                 //       docker run -dt --name owasp \
-                                   //     rtencatexebia/owasp-zap \
-                                     //   /bin/bash
-                                       // """
-                                //}
-                            //}
-                        //}
+            stage('Retrieving Scan Report') {
+                steps {
+                    script {
+                        echo "Retrieving OWASP ZAP scan report --> Start"
+                        // Assuming the report is being generated in XML format
+                        sh 'docker cp owasp:/zap/wrk/zap-report.xml ./zap-report.xml'
+                        echo "Retrieving OWASP ZAP scan report --> End"
+                    }
+                }
+            }
 
-                                stage('Scanning target on owasp container') {
-                                    steps {
-                                        script {
-                                            // Define the target and report name
-                                            target = "${params.TARGET}"
-                                            def reportName = "OWASPZAPREPORT-${env.BUILD_ID}.xml"
+            stage('Post-scan Actions') {
+                steps {
+                    script {
+                        echo "Post-scan actions --> Start"
+                        // You can parse the report or send it as an email or upload it somewhere for further processing
+                        // Example: Publish the ZAP report as an artifact
+                        archiveArtifacts artifacts: 'zap-report.xml', allowEmptyArchive: true
+                        echo "Post-scan actions --> End"
+                    }
+                }
+            }
 
-                                            // Define the local directory for mounting
-                                          //  def localDir = "/path/to/local/directory"  // Replace with the path on your host
 
-                                            // Run the container with volume mount and execute the scan in the same step
-                                            sh """
-                                                # Run the OWASP ZAP container with the volume mount
-                                                docker run -d --name owasp -v $localDir:/zap/wrk owasp/zap2docker-stable
 
-                                                # Run the full scan inside the container
-                                                docker exec owasp \
-                                                zap-full-scan.py \
-                                                -t $target \
-                                                -x /zap/wrk/$reportName
-                                            """
-                                        }
-                                    }
-                                }
 
 
 
