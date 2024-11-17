@@ -172,8 +172,8 @@ pipeline {
                                                    sh """
                                                        docker exec owasp \
                                                        zap-full-scan.py \
-                                                       -t $target \
-                                                       -x $reportName
+                                                       -t 'http://127.0.0.1' \
+                                                       -x 'OWASPZAPREPORT'
                                                    """
                                                }
                                            }
