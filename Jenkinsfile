@@ -162,23 +162,23 @@ pipeline {
                                              }
                                          }
                                  }
-                                          stage('Scanning target on owasp container') {
-                                              steps {
-                                                  script {
-                                                      target = "${params.TARGET}"
-                                                      def reportName = "report-full-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
+                                       stage('Scanning target on owasp container') {
+                                           steps {
+                                               script {
+                                                   target = "${params.TARGET}"
+                                                   def reportName = "report-full-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
 
-                                                      // Run the full scan
-                                                      sh """
-                                                          docker exec owasp \
-                                                          zap-full-scan.py \
-                                                          -t $target \
-                                                          -x $reportName \
-                                                          -I
-                                                      """
-                                                  }
-                                              }
-                                          }
+                                                   // Run the full scan without -I option
+                                                   sh """
+                                                       docker exec owasp \
+                                                       zap-full-scan.py \
+                                                       -t $target \
+                                                       -x $reportName
+                                                   """
+                                               }
+                                           }
+                                       }
+
 
 
 
