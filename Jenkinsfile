@@ -201,15 +201,7 @@ pipeline {
                                                   }
                                               }
                                           }
-                                             post {
-                                                       always {
-                                                           echo "Removing container"
-                                                           sh '''
-                                                               docker stop owasp
-                                                               docker rm owasp
-                                                           '''
-                                                       }
-                                                   }
+
 
 
 
