@@ -159,8 +159,9 @@ pipeline {
                         def targetUrl = 'http://127.0.0.1'
 
                         // Start the ZAP proxy in daemon mode
-                        sh """
-                        docker exec -d owasp zap-baseline.py -t $targetUrl -r /zap/wrk/zap-report.xml                        """
+                       sh """
+                           docker exec -d owasp zap-baseline.py -t $targetUrl -r /zap/reports/zap-report.xml
+                       """
 
                         // Wait for the scan to finish (You can adjust the timeout based on the app size)
                         echo "Waiting for ZAP to complete scan --> Start"
@@ -175,10 +176,11 @@ pipeline {
                   script {
                       echo "Retrieving OWASP ZAP scan report --> Start"
                       // Ensure the report has been generated and retrieve it
-                      sh """
-                          docker exec owasp ls /zap/wrk/zap-report.xml
-                      """
-                      sh 'docker cp owasp:/zap/wrk/zap-report.xml ./zap-report.xml'
+                    sh """
+                        docker exec owasp ls /zap/reports/zap-report.xml
+                    """
+
+                     sh 'docker cp owasp:/zap/reports/zap-report.xml ./zap-report.xml'
                       echo "Retrieving OWASP ZAP scan report --> End"
                   }
               }
