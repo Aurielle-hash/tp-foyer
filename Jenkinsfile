@@ -149,35 +149,31 @@ pipeline {
                             //}
                         //}
 
-                                 stage('Prepare wrk directory') {
-                                     when {
-                                                 environment name : 'GENERATE_REPORT', value: 'true'
-                                     }
-                                     steps {
-                                         script {
-                                                 sh """
-                                                     docker exec owasp \
-                                                     mkdir /zap/wrk
-                                                 """
-                                             }
-                                         }
-                                 }
-                                    stage('Scanning target on owasp container') {
-                                        steps {
-                                            script {
-                                                target = "http://127.0.0.1"
-                                                def reportName = "OWASPZAPREPORT-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
+                                stage('Scanning target on owasp container') {
+                                    steps {
+                                        script {
+                                            // Define the target and report name
+                                            target = "${params.TARGET}"
+                                            def reportName = "OWASPZAPREPORT-${env.BUILD_ID}.xml"
 
-                                                // Run the full scan
-                                                sh """
-                                                    docker exec owasp \
-                                                    zap-full-scan.py \
-                                                    -t $target \
-                                                    -x /zap/wrk/$reportName
-                                                """
-                                            }
+                                            // Define the local directory for mounting
+                                          //  def localDir = "/path/to/local/directory"  // Replace with the path on your host
+
+                                            // Run the container with volume mount and execute the scan in the same step
+                                            sh """
+                                                # Run the OWASP ZAP container with the volume mount
+                                                docker run -d --name owasp -v $localDir:/zap/wrk owasp/zap2docker-stable
+
+                                                # Run the full scan inside the container
+                                                docker exec owasp \
+                                                zap-full-scan.py \
+                                                -t $target \
+                                                -x /zap/wrk/$reportName
+                                            """
                                         }
                                     }
+                                }
+
 
 
 
