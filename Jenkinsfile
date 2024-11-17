@@ -135,7 +135,9 @@ pipeline {
                   stage('OWASP ZAP Scan') {
                             steps {
                                 script {
-                    sh 'zap-cli quick-scan --url http://127.0.0.1:8082'
+                    //sh 'zap-cli quick-scan --url http://127.0.0.1:8082'
+                              sh'  docker run --rm -t owasp/zap2docker-stable zap-baseline.py -t http://127.0.0.1:8082'
+
                                 }
                             }
                         }
