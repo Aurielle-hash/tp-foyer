@@ -165,7 +165,7 @@ pipeline {
 
                         // Wait for the scan to finish (You can adjust the timeout based on the app size)
                         echo "Waiting for ZAP to complete scan --> Start"
-                        sleep 600 // Adjust as necessary based on the application size and complexity
+                        sleep 10 // Adjust as necessary based on the application size and complexity
                         echo "Waiting for ZAP to complete scan --> End"
                     }
                 }
