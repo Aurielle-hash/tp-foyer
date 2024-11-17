@@ -162,22 +162,22 @@ pipeline {
                                              }
                                          }
                                  }
-                                       stage('Scanning target on owasp container') {
-                                           steps {
-                                               script {
-                                                   target = "${params.TARGET}"
-                                                   def reportName = "report-full-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
+                                    stage('Scanning target on owasp container') {
+                                        steps {
+                                            script {
+                                                target = "${params.TARGET}"
+                                                def reportName = "OWASPZAPREPORT-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
 
-                                                   // Run the full scan without -I option
-                                                   sh """
-                                                       docker exec owasp \
-                                                       zap-full-scan.py \
-                                                       -t 'http://127.0.0.1' \
-                                                       -x 'OWASPZAPREPORT'
-                                                   """
-                                               }
-                                           }
-                                       }
+                                                // Run the full scan
+                                                sh """
+                                                    docker exec owasp \
+                                                    zap-full-scan.py \
+                                                    -t $target \
+                                                    -x /zap/wrk/$reportName
+                                                """
+                                            }
+                                        }
+                                    }
 
 
 
