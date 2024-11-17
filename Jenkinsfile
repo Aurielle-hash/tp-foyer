@@ -165,7 +165,7 @@ pipeline {
                                     stage('Scanning target on owasp container') {
                                         steps {
                                             script {
-                                                target = "${params.TARGET}"
+                                                target = "http://127.0.0.1"
                                                 def reportName = "OWASPZAPREPORT-${env.BUILD_ID}.xml"  // Dynamic report name for full scan
 
                                                 // Run the full scan
