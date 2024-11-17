@@ -132,22 +132,22 @@ pipeline {
                     }
                 }
 
-                    stage('Setting up OWASP ZAP docker container') {
-                            steps {
-                                script {
-                                        echo "Pulling up last OWASP ZAP container --> Start"
-                                        sh 'docker login -u benhammedmaissa -p Meyssouna21!'
-                                        sh 'docker pull rtencatexebia/owasp-zap'
-                                        echo "Pulling up last VMS container --> End"
-                                        echo "Starting container --> Start"
-                                        sh """
-                                        docker run -dt --name owasp \
-                                        rtencatexebia/owasp-zap \
-                                        /bin/bash
-                                        """
-                                }
-                            }
-                        }
+               //stage('Setting up OWASP ZAP docker container') {
+                 //     steps {
+                   //        script {
+                     //                   echo "Pulling up last OWASP ZAP container --> Start"
+                       //                 sh 'docker login -u benhammedmaissa -p Meyssouna21!'
+                         //               sh 'docker pull rtencatexebia/owasp-zap'
+                           //             echo "Pulling up last VMS container --> End"
+                             //           echo "Starting container --> Start"
+                               //         sh """
+                                 //       docker run -dt --name owasp \
+                                   //     rtencatexebia/owasp-zap \
+                                     //   /bin/bash
+                                       // """
+                                //}
+                            //}
+                        //}
 
                                  stage('Prepare wrk directory') {
                                      when {
