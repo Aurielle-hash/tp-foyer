@@ -160,8 +160,7 @@ pipeline {
 
                         // Start the ZAP proxy in daemon mode
                         sh """
-                            docker exec -d owasp zap-baseline.py -t $targetUrl
-                        """
+                        docker exec -d owasp zap-baseline.py -t $targetUrl -r /zap/wrk/zap-report.xml                        """
 
                         // Wait for the scan to finish (You can adjust the timeout based on the app size)
                         echo "Waiting for ZAP to complete scan --> Start"
@@ -171,16 +170,19 @@ pipeline {
                 }
             }
 
-            stage('Retrieving Scan Report') {
-                steps {
-                    script {
-                        echo "Retrieving OWASP ZAP scan report --> Start"
-                        // Assuming the report is being generated in XML format
-                        sh 'docker cp owasp:/zap/wrk/zap-report.xml ./zap-report.xml'
-                        echo "Retrieving OWASP ZAP scan report --> End"
-                    }
-                }
-            }
+          stage('Retrieving Scan Report') {
+              steps {
+                  script {
+                      echo "Retrieving OWASP ZAP scan report --> Start"
+                      // Ensure the report has been generated and retrieve it
+                      sh """
+                          docker exec owasp ls /zap/wrk/zap-report.xml
+                      """
+                      sh 'docker cp owasp:/zap/wrk/zap-report.xml ./zap-report.xml'
+                      echo "Retrieving OWASP ZAP scan report --> End"
+                  }
+              }
+          }
 
             stage('Post-scan Actions') {
                 steps {
