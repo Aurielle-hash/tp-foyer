@@ -142,7 +142,7 @@ pipeline {
                                         echo "Starting container --> Start"
                                         sh """
                                         docker run -dt --name owasp \
-                                        owasp/zap2docker-stable \
+                                        rtencatexebia/owasp-zap \
                                         /bin/bash
                                         """
                                 }
