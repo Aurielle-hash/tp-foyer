@@ -161,7 +161,7 @@ pipeline {
                      sh "mkdir -p ${reportDir}"
                         // Start the ZAP proxy in daemon mode
                          sh """
-                                      docker exec -d -v ${reportDir}:/zap/reports owasp zap-baseline.py -t $targetUrl -r /zap/reports/zap-report.xml
+                                      docker exec -d ${reportDir}:/zap/reports owasp zap-baseline.py -t $targetUrl -r /zap/reports/zap-report.xml
                                   """
 
                         // Wait for the scan to finish (You can adjust the timeout based on the app size)
