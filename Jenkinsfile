@@ -131,13 +131,22 @@ pipeline {
             }
         }*/
 
-           /* stage('Docker Compose Up') {
+            stage('Docker Compose Up') {
                     steps {
                         script {
                             sh 'docker-compose -f docker-compose.yml up -d --build'
                         }
                     }
-                }*/
+                }
+
+                  stage('OWASP ZAP Scan') {
+                            steps {
+                                script {
+                                    zap-cli quick-scan --url http://127.0.0.1:8082
+                                }
+                            }
+                        }
+
 
 }
 
