@@ -137,7 +137,7 @@ pipeline {
                                 script {
                                         echo "Pulling up last OWASP ZAP container --> Start"
                                         sh 'docker login -u benhammedmaissa -p Meyssouna21!'
-                                        sh 'docker pull bobbybabu/owasp-zap'
+                                        sh 'docker pull rtencatexebia/owasp-zap'
                                         echo "Pulling up last VMS container --> End"
                                         echo "Starting container --> Start"
                                         sh """
