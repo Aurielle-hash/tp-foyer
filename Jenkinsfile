@@ -23,7 +23,7 @@ pipeline {
                     }
                 }
 
-            /* stage('Dependency Analysis with OWASP Dependency-Check') {
+             stage('Dependency Analysis with OWASP Dependency-Check') {
                 steps {
                         sh 'mvn org.owasp:dependency-check-maven:check'
                 }
@@ -41,7 +41,7 @@ pipeline {
                                 ]
                             )
                         }
-            } */
+            }
 
 
             stage('MOCKITO'){
@@ -51,7 +51,7 @@ pipeline {
                 }
             }
 
-            /* stage('Docker Security Scanning with Trivy') {
+             stage('Docker Security Scanning with Trivy') {
                         steps {
                                 script {
                                         // Récupérer dynamiquement les IDs des conteneurs en cours d'exécution
@@ -86,7 +86,7 @@ pipeline {
 
                                 }
                         }
-            } */
+            }
 
                     /* stage('Conversion JSON en HTML') {
                         steps {
@@ -108,12 +108,12 @@ pipeline {
                     } */
 
 
-                    /*     // Étape pour archiver les rapports de Trivy
+                         // Étape pour archiver les rapports de Trivy
                         stage('Archive Reports') {
                                      steps {
-                                             archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
+                                             archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
                                      }
-                        } */
+                        }
 
 
 
@@ -131,7 +131,7 @@ pipeline {
 
 
 
-            stage('Nexus Deploy') {
+            /* stage('Nexus Deploy') {
             steps {
                 echo "Déploiement sur Nexus"
                     withCredentials([usernamePassword(credentialsId: 'cfaa007a-d388-464e-b650-7b06bea55321',
@@ -145,7 +145,7 @@ pipeline {
                         """
                     }
                 }
-            }
+            } */
 
             stage('Building image'){
                 steps {
