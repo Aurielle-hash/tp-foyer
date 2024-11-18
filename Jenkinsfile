@@ -83,7 +83,7 @@ pipeline {
                                         // Exécuter le scan Trivy et sauvegarder le rapport en format JSON
                                         sh """
                                         trivy image \
-                                        --severity HIGH,CRITICAL \
+                                        --severity LOW,MEDIUM,HIGH,CRITICAL \
                                         --exit-code 1 \
                                         --no-progress \
                                         --format json \
