@@ -92,6 +92,14 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <!-- Directory for reports -->
+                    <outputDirectory>${project.build.directory}/dependency-check-reports</outputDirectory>
+                    <!-- Fail build for vulnerabilities above this CVSS score -->
+                    <failBuildOnCVSS>7.0</failBuildOnCVSS>
+                    <!-- Include all report formats -->
+                    <format>ALL</format>
+                </configuration>
             </plugin>
         </plugins>
     </build>
