@@ -107,7 +107,7 @@ pipeline {
          stage('Archive Reports') {
              steps {
                  dir("tp-foyer") {
-                     archiveArtifacts artifacts: "trivy-reports *//*.json", allowEmptyArchive: true
+                     archiveArtifacts artifacts: "trivy-reports/*.json", allowEmptyArchive: true
                  }
              }
          }
