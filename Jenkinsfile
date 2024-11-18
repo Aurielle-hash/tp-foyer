@@ -177,12 +177,12 @@ pipeline {
                   script {
                       echo "Retrieving OWASP ZAP scan report --> Start"
                       // Ensure the report has been generated and retrieve it
-                         echo "Report available at: ${env.WORKSPACE}/var/lib/jenkins/workspace/MAISSABENHAMMED5NIDS2/zap-reports/zap-report.xml"
+                        // echo "Report available at: ${env.WORKSPACE}/var/lib/jenkins/workspace/MAISSABENHAMMED5NIDS2/zap-reports/zap-report.xml"
                                   echo "Retrieving OWASP ZAP scan report --> End"
 
-                   // sh """
-                     //   docker exec owasp ls /zap/reports/zap-report.xml
-                    //"""
+                    sh "
+                        docker exec owasp ls /zap/reports/zap-report.xml
+                    "
 
                      //sh 'docker cp owasp:/zap/reports/zap-report.xml ./zap-report.xml'
                       //echo "Retrieving OWASP ZAP scan report --> End"
