@@ -44,7 +44,7 @@ pipeline {
          }
      }
 */
-      /*stage('Dependency Check') {
+      stage('Dependency Check') {
           steps {
               script {
                   // Ensure output directory exists
@@ -66,7 +66,7 @@ pipeline {
                        dependencyCheckPublisher pattern: 'reports/dependency-check/dependency-check-report.html'
                    }
                }
-               */
+
 
 
 
@@ -201,6 +201,7 @@ pipeline {
                     }
                 }
             }
+
 
 
 
